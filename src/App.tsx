@@ -1,25 +1,40 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./hooks";
 import LoginPage from "./pages/LoginPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div>
-        <div>Cargando...</div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <LoginPage />;
-  }
+  const { isAuthenticated } = useAuth();
 
   return (
-    <div>
-      <h1>Bienvenido a Sazonarte</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* Public Route: Login*/}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />
+          }
+        />
+
+        {/* Protected Route: Dashboeard (Home)*/}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <DashboardPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Fallback: Redirect to home or login*/}
+        <Route
+          path="*"
+          element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
