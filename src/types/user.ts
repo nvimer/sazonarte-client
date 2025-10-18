@@ -1,27 +1,27 @@
 /**
- * TIPOS DE USUARIO
- * Basados en el modelo User de Prisma
+ * USER TYPES
  */
 
-import { RoleName } from './enums';
+import { RoleName } from "./enums";
 
 /**
- * Perfil de usuario
- * Sincronizado con: model Profile en Prisma
+ * User's profile
  */
 export interface Profile {
   id: string;
   userId: string;
-  address?: string;
+  photoUrl?: string | null;
+  birthDate?: string | null;
+  identification?: string | null;
+  address?: string | null;
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
-  deletedAt?: string;
+  deletedAt?: string | null;
 }
 
 /**
- * Rol con información básica
- * Sincronizado con: model Role en Prisma
+ * Role with basic information
  */
 export interface Role {
   id: number;
@@ -34,8 +34,7 @@ export interface Role {
 }
 
 /**
- * Permiso
- * Sincronizado con: model Permission en Prisma
+ * Permissions
  */
 export interface Permission {
   id: number;
@@ -48,20 +47,14 @@ export interface Permission {
 }
 
 /**
- * Usuario completo
- * Sincronizado con: model User en Prisma
- * 
- * NOTA: El password NUNCA debe venir del backend en las respuestas.
- * El backend debe excluirlo siempre.
+ * Complete USER
  */
 export interface User {
   id: string;
   name: string;
   email: string;
   phone?: string;
-  // password: string; ← NUNCA incluir esto
   profile?: Profile;
-  roles?: Role[]; // Opcional, depende del endpoint
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
@@ -69,7 +62,7 @@ export interface User {
 }
 
 /**
- * Usuario con roles y permisos (respuesta de /users/:id/roles-permissions)
+ *  User with roles and permissions
  */
 export interface UserWithRolesAndPermissions extends User {
   roles: (Role & {
@@ -79,7 +72,6 @@ export interface UserWithRolesAndPermissions extends User {
 
 /**
  * Datos para registro de usuario
- * Usado en POST /auth/register
  */
 export interface RegisterInput {
   name: string;
@@ -91,7 +83,6 @@ export interface RegisterInput {
 
 /**
  * Datos para login
- * Usado en POST /auth/login
  */
 export interface LoginInput {
   email: string;
@@ -126,4 +117,13 @@ export interface UpdateUserInput {
   email?: string;
   phone?: string;
   roleIds?: number[];
+}
+
+/**
+ * Response GET /profile/me
+ */
+export interface ProfileMeResponse {
+  success: boolean;
+  message: string;
+  data: User;
 }

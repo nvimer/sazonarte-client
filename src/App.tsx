@@ -34,6 +34,23 @@ const App = () => {
         <p>
           <strong>Email:</strong> {user?.email}
         </p>
+        <p>
+          <strong>Teléfono:</strong> {user?.phone}
+        </p>
+
+        {user?.profile && (
+          <div>
+            <h3>Perfil</h3>
+            <p>
+              <strong>Dirección:</strong>{" "}
+              {user.profile.address || "No registrada"}
+            </p>
+            <p>
+              <strong>Fecha de nacimiento:</strong>{" "}
+              {user.profile.birthDate || "No registrada"}
+            </p>
+          </div>
+        )}
 
         <button
           onClick={logout}
