@@ -1,9 +1,12 @@
 import { useAuth } from "@/hooks";
 import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   // Hook to access the contexts login function
   const { login } = useAuth();
+
+  const navigate = useNavigate();
 
   // Form states
   const [email, setEmail] = useState("");
@@ -33,9 +36,8 @@ const LoginPage = () => {
       // Try to perform the login
       await login({ email, password });
 
-      console.log("✅  Login Succesfully");
-
-      alert("Login Succesfully!");
+      // Navigate to home/dashboard
+      navigate("/", { replace: true });
     } catch (error: any) {
       // If there is an error, it is displayed here.
       console.error("❌ Login Error", error);

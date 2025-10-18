@@ -1,74 +1,40 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./hooks";
 import LoginPage from "./pages/LoginPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
-  const { user, isAuthenticated, isLoading, logout } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div>
-        <div>Cargando...</div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <LoginPage />;
-  }
+  const { isAuthenticated } = useAuth();
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Bienvenido a Sazonarte</h1>
-      <div
-        style={{
-          marginTop: "20px",
-          padding: "20px",
-          border: "1px solid #ccc",
-          borderRadius: "8px",
-        }}
-      >
-        <h2>Sesión Activa</h2>
-        <p>
-          <strong>Nombre:</strong> {user?.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {user?.email}
-        </p>
-        <p>
-          <strong>Teléfono:</strong> {user?.phone}
-        </p>
+    <BrowserRouter>
+      <Routes>
+        {/* Public Route: Login*/}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />
+          }
+        />
 
-        {user?.profile && (
-          <div>
-            <h3>Perfil</h3>
-            <p>
-              <strong>Dirección:</strong>{" "}
-              {user.profile.address || "No registrada"}
-            </p>
-            <p>
-              <strong>Fecha de nacimiento:</strong>{" "}
-              {user.profile.birthDate || "No registrada"}
-            </p>
-          </div>
-        )}
+        {/* Protected Route: Dashboeard (Home)*/}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <DashboardPage />
+            </PrivateRoute>
+          }
+        />
 
-        <button
-          onClick={logout}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#dc3545",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
-          Cerrar Sesion
-        </button>
-      </div>
-    </div>
+        {/* Fallback: Redirect to home or login*/}
+        <Route
+          path="*"
+          element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
