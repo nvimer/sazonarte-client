@@ -54,94 +54,77 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px", padding: "20px" }}>
-      <h1>Iniciar Sesión</h1>
-      <p style={{ color: "#666" }}>SazonArte - Gestión de Restaurante</p>
-
-      {/* Email input field */}
-      <form onSubmit={handleSubmit} style={{ marginTop: "30px" }}>
-        <div style={{ marginBottom: "20px" }}>
-          <label
-            htmlFor="email"
-            style={{ display: "block", marginBottom: "5px" }}
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="tu@email.com"
-            disabled={isLoading}
-            style={{
-              width: "100x",
-              padding: "10px",
-              fontSize: "16px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      {/* Login Card*/}
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        {/* Title*/}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Restaurante Sazonarte
+          </h1>
+          <p className="mt-2 text-sm text-gray-600">Sistema de Gestión</p>
         </div>
 
-        {/* Password input field */}
-        <div style={{ marginTop: "20px" }}>
-          <label
-            htmlFor="password"
-            style={{ display: "block", marginBottom: "5px" }}
-          >
-            Contraseña
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            disabled={isLoading}
-            style={{
-              width: "100x",
-              padding: "10px",
-              fontSize: "16px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-
-        {error && (
-          <div
-            style={{
-              padding: "10px",
-              marginBottom: "20px",
-              backgroundColor: "#fee",
-              color: "#c00",
-              border: "1px solid #fcc",
-              borderRadius: "4px",
-            }}
-          >
-            {error}
+        {/* Form*/}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email field*/}
+          <div>
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@mail.com"
+              disabled={isLoading}
+              className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              required
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          style={{
-            width: "100%",
-            padding: "12px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            color: "white",
-            backgroundColor: isLoading ? "#ccc" : "#007bff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: isLoading ? "not-allowed" : "pointer",
-          }}
-        >
-          {isLoading ? "Iniciando Sesión..." : "Iniciar Sesión"}
-        </button>
-      </form>
+          {/* Password field*/}
+          <div>
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              disabled={isLoading}
+              className="w-full px-4 py-3 text-gray-900 placeholder-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              required
+            />
+          </div>
+
+          {/* Error Message*/}
+          {error && (
+            <div className="p-4 text-sm text-red-700 bg-red-100 border border-red-200 rounded-lg">
+              {/* Icon*/}
+              <span className="font-semibold">Error:</span> {error}
+            </div>
+          )}
+
+          {/* Submit Button*/}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full px-4 py-3 text-white bg-blue-600 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+          >
+            {isLoading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
