@@ -111,7 +111,7 @@ const ComponentsTestPage = () => {
             <div>
               <h2 className="text-2xl font-semibold mb-4">Cards</h2>
 
-              <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Different paddings */}
                 <Card padding="sm" shadow="sm">
                   <h3 className="font-semibold">Small Padding</h3>
@@ -131,6 +131,49 @@ const ComponentsTestPage = () => {
                 </Card>
               </div>
             </div>
+
+            {/* Form Example */}
+            <Card>
+              <h2 className="text-2xl font-semibold mb-4">
+                Ejemplo de formulario
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <Input
+                  label="Email"
+                  type="email"
+                  placeholder="tu@mail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+
+                <Input
+                  label="Password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+
+                <div className="flex gap-2">
+                  <Button type="submit" isLoading={isLoading}>
+                    Enviar
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {
+                      setEmail("");
+                      setPassword("");
+                      setEmailError("");
+                    }}
+                  >
+                    Limpiar
+                  </Button>
+                </div>
+              </form>
+            </Card>
           </div>
         </Card>
       </div>
