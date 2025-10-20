@@ -3,6 +3,7 @@ import { useAuth } from "./hooks";
 import LoginPage from "./pages/LoginPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import DashboardPage from "./pages/DashboardPage";
+import ComponentsTestPage from "./pages/ComponentsTestPage";
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -17,6 +18,9 @@ const App = () => {
             isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />
           }
         />
+
+        {/* Temporary test page*/}
+        <Route path="/test-components" element={<ComponentsTestPage />} />
 
         {/* Protected Route: Dashboeard (Home)*/}
         <Route
