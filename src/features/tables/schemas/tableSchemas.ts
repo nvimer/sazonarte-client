@@ -2,13 +2,11 @@ import { TableStatus } from "@/types";
 import { z } from "zod";
 
 export const createTableSchema = z.object({
-    number: z
-        .number({
+    number: z.coerce
+        .string({
             error: (iss) =>
                 iss.input === undefined ? "Field is required." : "Invalid input.",
         })
-        .int("Must be an integer")
-        .positive("Must be positive")
         .min(1, "Minimum is 1")
         .max(999, "Maximum is 999"),
 
