@@ -19,6 +19,7 @@ export const createTableSchema = z.object({
         .max(100, "Maximum 100 characters long")
         .optional()
         .or(z.literal("")),
+    status: z.string().min(3, "Minimum 3 characters long"),
 });
 
 /**

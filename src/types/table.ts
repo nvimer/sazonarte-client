@@ -3,7 +3,7 @@
  * Basados en el modelo Table de Prisma
  */
 
-import { TableStatus } from './enums';
+import { TableStatus } from "./enums";
 
 /**
  * Mesa
