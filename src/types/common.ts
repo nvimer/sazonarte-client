@@ -1,20 +1,20 @@
 /**
- * TIPOS COMUNES
- * 
+ * COMMON TYPES
+ *
+ *
  * Tipos que se usan en múltiples lugares de la aplicación.
  */
 
 /**
  * Estructura estándar de respuesta de tu API
- * 
+ *
  * T es un "generic" - puede ser cualquier tipo
  * Ejemplo: ApiResponse<Order[]> para una lista de pedidos
  */
 export interface ApiResponse<T> {
   success: boolean;
+  message: string;
   data: T;
-  message?: string;
-  error?: string;
 }
 
 /**
@@ -39,12 +39,16 @@ export interface PaginationParams {
  * Respuesta paginada de la API
  */
 export interface PaginatedResponse<T> {
+  success: boolean;
+  message: string;
   data: T[];
-  pagination: {
+  meta: {
+    total: number;
     page: number;
     limit: number;
-    total: number;
     totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
   };
 }
 
