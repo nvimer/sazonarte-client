@@ -76,24 +76,23 @@ export function TablesPage() {
                     <div>
                         <span>Filtrar por estado: </span>
                         <div>
-                            <Button>Todas ({tables?.data.length || 0})</Button>
+                            <Button>Todas ({tables?.length || 0})</Button>
                             <Button>
                                 Disponibles (
-                                {tables?.data.filter((t) => t.status === TableStatus.AVAILABLE)
+                                {tables?.filter((t) => t.status === TableStatus.AVAILABLE)
                                     .length || 0}
                                 )
                             </Button>
                             <Button>
                                 Ocupadas (
-                                {tables?.data.filter((t) => t.status === TableStatus.OCCUPIED)
+                                {tables?.filter((t) => t.status === TableStatus.OCCUPIED)
                                     .length || 0}
                                 )
                             </Button>
                             <Button>
                                 Limpieza (
-                                {tables?.data.filter(
-                                    (t) => t.status === TableStatus.NEEDS_CLEANING,
-                                ).length || 0}
+                                {tables?.filter((t) => t.status === TableStatus.NEEDS_CLEANING)
+                                    .length || 0}
                                 )
                             </Button>
                         </div>
@@ -104,7 +103,7 @@ export function TablesPage() {
                 {filteredTables && filteredTables.length > 0 ? (
                     <div>
                         {filteredTables.map((table) => (
-                            <TableCard />
+                            <TableCard key={table.id} table={table} />
                         ))}
                     </div>
                 ) : (
