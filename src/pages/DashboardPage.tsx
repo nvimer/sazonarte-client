@@ -1,7 +1,11 @@
+import { Button } from "@/components";
 import { useAuth } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const { user, logout } = useAuth();
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -59,6 +63,12 @@ const DashboardPage = () => {
             >
               Cerrar Sesión
             </button>
+          </div>
+
+          {/* Navigation to modules */}
+          <div>
+            <h3>Módulos</h3>
+            <Button onClick={() => navigate("/tables")}>Gestionar Mesas</Button>
           </div>
         </div>
       </div>
