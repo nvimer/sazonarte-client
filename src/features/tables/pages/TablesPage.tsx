@@ -31,10 +31,10 @@ export function TablesPage() {
     // Loading state
     if (isLoading) {
         return (
-            <div>
-                <div>
-                    <div>
-                        <p>Cargando mesas...</p>
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-r-blue-600 mx-auto mb-4">
+                        <p className="text-gray-600">Cargando mesas...</p>
                     </div>
                 </div>
             </div>
@@ -44,52 +44,95 @@ export function TablesPage() {
     // Error state
     if (error) {
         return (
-            <div>
-                <Card>
-                    <h2>Error</h2>
-                    <p>{error.message}</p>
-                    <Button>Reintentar</Button>
+            <div className="flex items-center justify-center min-h-screen">
+                <Card padding="lg" className="max-w-md">
+                    <h2 className="text-xl font-bold text-red-600 mb-2">Error</h2>
+                    <p className="text-gray-700">{error.message}</p>
+                    <Button
+                        variant="primary"
+                        onClick={() => window.location.reload()}
+                        className="mt-4"
+                        fullWidth
+                    >
+                        Reintentar
+                    </Button>
                 </Card>
             </div>
         );
     }
 
     return (
-        <div>
-            <div>
+        <div className="min-h-screen bg-gray-50 p-6">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div>
+                <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h1>Mesas</h1>
-                        <p>Gestionar mesas del restaurante</p>
+                        <h1 className="text-3xl font-bold text-gray-900">Mesas</h1>
+                        <p className="text-gray-600 mt-1">
+                            Gestionar mesas del restaurante
+                        </p>
                     </div>
-                    <Button>{showForm ? "Cancelar" : "Nueva Mesa"}</Button>
+                    <Button variant="primary" onClick={() => setShowForm(!showForm)}>
+                        {showForm ? "Cancelar" : "Nueva Mesa"}
+                    </Button>
                 </div>
                 {/* Form (conditional) */}
                 {showForm && (
-                    <div>
-                        <TableForm />
+                    <div className="mb-6">
+                        <TableForm
+                            table={editingTable}
+                            onSuccess={handleFormClose}
+                            onCancel={handleFormClose}
+                        />
                     </div>
                 )}
                 {/* Filters */}
-                <Card>
-                    <div>
-                        <span>Filtrar por estado: </span>
-                        <div>
-                            <Button>Todas ({tables?.length || 0})</Button>
-                            <Button>
+                <Card padding="md" className="mb-6">
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm font-medium text-gray-700">
+                            Filtrar por estado:{" "}
+                        </span>
+                        <div className=" gap-2">
+                            <Button
+                                size="sm"
+                                variant={statusFilter === "ALL" ? "primary" : "ghost"}
+                                onClick={() => setStatusFilter("ALL")}
+                            >
+                                Todas ({tables?.length || 0})
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant={
+                                    statusFilter === TableStatus.AVAILABLE ? "primary" : "ghost"
+                                }
+                                onClick={() => setStatusFilter(TableStatus.AVAILABLE)}
+                            >
                                 Disponibles (
                                 {tables?.filter((t) => t.status === TableStatus.AVAILABLE)
                                     .length || 0}
                                 )
                             </Button>
-                            <Button>
+                            <Button
+                                size="sm"
+                                variant={
+                                    statusFilter === TableStatus.OCCUPIED ? "primary" : "ghost"
+                                }
+                                onClick={() => setStatusFilter(TableStatus.OCCUPIED)}
+                            >
                                 Ocupadas (
                                 {tables?.filter((t) => t.status === TableStatus.OCCUPIED)
                                     .length || 0}
                                 )
                             </Button>
-                            <Button>
+                            <Button
+                                size="sm"
+                                variant={
+                                    statusFilter === TableStatus.NEEDS_CLEANING
+                                        ? "primary"
+                                        : "ghost"
+                                }
+                                onClick={() => setStatusFilter(TableStatus.NEEDS_CLEANING)}
+                            >
                                 Limpieza (
                                 {tables?.filter((t) => t.status === TableStatus.NEEDS_CLEANING)
                                     .length || 0}
@@ -101,14 +144,14 @@ export function TablesPage() {
 
                 {/* Tables Grid */}
                 {filteredTables && filteredTables.length > 0 ? (
-                    <div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredTables.map((table) => (
-                            <TableCard key={table.id} table={table} />
+                            <TableCard key={table.id} table={table} onEdit={handleEdit} />
                         ))}
                     </div>
                 ) : (
-                    <Card>
-                        <p>
+                    <Card padding="lg" className="text-center">
+                        <p className="text-gray-600 text-lg">
                             {statusFilter === "ALL"
                                 ? "No se encontraron mesas. ¡Crea tu primera mesa!"
                                 : "No hay mesas con este estado"}
