@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import DashboardPage from "./pages/DashboardPage";
 import ComponentsTestPage from "./pages/ComponentsTestPage";
+import { TablesPage } from "./features/tables";
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -28,6 +29,16 @@ const App = () => {
           element={
             <PrivateRoute>
               <DashboardPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Tables module */}
+        <Route
+          path="/tables"
+          element={
+            <PrivateRoute>
+              <TablesPage />
             </PrivateRoute>
           }
         />
