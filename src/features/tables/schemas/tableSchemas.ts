@@ -2,14 +2,10 @@ import { TableStatus } from "@/types";
 import { z } from "zod";
 
 export const createTableSchema = z.object({
-    number: z.coerce
-        .string({
-            error: (iss) =>
-                iss.input === undefined ? "Field is required." : "Invalid input.",
-        })
-        .min(1, "Minimum is 1")
-        .max(999, "Maximum is 999"),
-
+    number: z.string({
+        error: (iss) =>
+            iss.input === undefined ? "Field is required." : "Invalid input.",
+    }),
     location: z
         .string({
             error: (iss) =>
@@ -19,7 +15,7 @@ export const createTableSchema = z.object({
         .max(100, "Maximum 100 characters long")
         .optional()
         .or(z.literal("")),
-    status: z.string().min(3, "Minimum 3 characters long"),
+    status: z.enum(TableStatus),
 });
 
 /**
