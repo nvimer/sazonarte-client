@@ -70,7 +70,7 @@ export const createTable = async (tableData: CreateTableInput) => {
  * @returns Mesa actualizada
  */
 export const updateTable = async (id: number, tableData: UpdateTableInput) => {
-  const { data } = await axiosClient.put<ApiResponse<Table>>(
+  const { data } = await axiosClient.patch<ApiResponse<Table>>(
     `/tables/${id}`,
     tableData,
   );
