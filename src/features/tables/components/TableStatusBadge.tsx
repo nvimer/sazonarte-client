@@ -33,12 +33,11 @@ export function TableStatusBadge({ status }: TableStatusBadgeProps) {
 
     return (
         <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border${config.color}`}
+            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${config.color}`}
         >
             {/* Status dot */}
-            <span className="w-2 h-2 rounded-full bg-current mr-2">
-                {config.label}
-            </span>
+            <span className="w-2 h-2 rounded-full bg-current mr-2" />
+            {config.label}
         </span>
     );
 }

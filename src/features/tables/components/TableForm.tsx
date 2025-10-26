@@ -59,7 +59,7 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                         onSuccess?.();
                     },
                     onError: (error: any) => {
-                        alert(`Error: ${error.response?.data?.message || error.message}`);
+                        alert(`Error: ${error.response?.message || error.message}`);
                     },
                 },
             );
@@ -71,24 +71,58 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                     onSuccess?.();
                 },
                 onError: (error: any) => {
-                    alert(`Error: ${error.response?.data?.message || error.message}`);
+                    alert(`Error: ${error.response?.message || error.message}`);
                 },
             });
         }
     };
 
     return (
-        <Card>
-            <h2>{isEditing ? "Editar Mesa" : "Nueva Mesa"}</h2>
-            <form action="">
+        <Card padding="md">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">
+                {isEditing ? "Editar Mesa" : "Nueva Mesa"}
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 {/* Table Number  */}
-                <Input />
-                {/* Status */}
-                <Input />
+                <Input
+                    label="Número de mesa"
+                    type="number"
+                    placeholder="1"
+                    {...register("number", { valueAsNumber: false })}
+                    error={errors.number?.message}
+                />
+                {/* Location */}
+                <Input
+                    label="Ubicación"
+                    type="text"
+                    placeholder="Entrada"
+                    {...register("location")}
+                    error={errors.location?.message}
+                />
+
+                {/* <Input /> */}
                 {/* Actions */}
-                <div>
-                    <Button>{isEditing ? "Actualizar" : "Crear"}</Button>
-                    {onCancel && <Button>Cancelar</Button>}
+                <div className="flex gap-2 pt-4">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        isLoading={isPending}
+                        disabled={isPending}
+                        fullWidth
+                    >
+                        {isEditing ? "Actualizar" : "Crear"}
+                    </Button>
+                    {onCancel && (
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={onCancel}
+                            disabled={isPending}
+                            fullWidth
+                        >
+                            Cancelar
+                        </Button>
+                    )}
                 </div>
             </form>
         </Card>
