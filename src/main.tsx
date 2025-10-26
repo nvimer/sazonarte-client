@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <App />
       </AuthProvider>
-      {/* DevTools  */}
+      {/* DevTools (only in development) */}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>,
