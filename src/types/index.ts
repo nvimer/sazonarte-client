@@ -16,6 +16,5 @@ export * from "./enums";
 // Domain types
 export * from "./user";
 export * from "./table";
-export * from "./menuCategory";
-export * from "./menuItem";
+export * from "./menu";
 // export * from "./order";

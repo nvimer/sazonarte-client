@@ -1,11 +1,11 @@
 /**
  * MENU API SERVICE
- * 
+ *
  * Servicios relacionados con el menú del restaurante.
  * Endpoints base: /menus/*
  */
 
-import { axiosClient } from './axiosClient';
+import { axiosClient } from "./axiosClient";
 import type {
   MenuCategory,
   MenuItem,
@@ -17,121 +17,118 @@ import type {
   ApiResponse,
   PaginatedResponse,
   PaginationParams,
-} from '@/types';
+} from "@/types";
 
-// ==================== CATEGORÍAS ====================
+// ==================== CATEGORIES ====================
 
 /**
  * GET /menus/categories
- * 
- * Obtiene lista de categorías del menú con paginación
- * 
- * @param params - Parámetros de paginación
- * @returns Lista paginada de categorías
+ *
+ * Get list of all menu categories with pagination
+ *
+ * @param params - Params of pagination
+ * @returns Paginated listed of Menu Categories
  */
 export const getCategories = async (params?: PaginationParams) => {
   const { data } = await axiosClient.get<
     ApiResponse<PaginatedResponse<MenuCategory>>
-  >('/menus/categories', { params });
+  >("/menus/categories", { params });
   return data;
 };
 
 /**
  * GET /menus/categories/search
- * 
- * Busca categorías con filtros
- * 
- * @param params - Parámetros de búsqueda y paginación
- * @returns Lista filtrada de categorías
+ *
+ * Search a menu categories with filters
+ *
+ * @param params - Params of search and pagination
+ * @returns Paginated filted listed of menu categories
  */
 export const searchCategories = async (
-  params: PaginationParams & CategorySearchParams
+  params: PaginationParams & CategorySearchParams,
 ) => {
   const { data } = await axiosClient.get<
     ApiResponse<PaginatedResponse<MenuCategory>>
-  >('/menus/categories/search', { params });
+  >("/menus/categories/search", { params });
   return data;
 };
 
 /**
  * GET /menus/categories/:id
- * 
- * Obtiene una categoría por su ID
- * 
- * @param id - ID de la categoría
- * @returns Datos de la categoría
+ *
+ * Get menu category by ID
+ *
+ * @param id - Menu Category ID
+ * @returns Menu Category selected with Data
  */
 export const getCategoryById = async (id: number) => {
   const { data } = await axiosClient.get<ApiResponse<MenuCategory>>(
-    `/menus/categories/${id}`
+    `/menus/categories/${id}`,
   );
   return data;
 };
 
 /**
  * POST /menus/categories
- * 
- * Crea una nueva categoría del menú
- * 
+ *
+ * Create a new Category of Menu
+ *
  * @param categoryData - Datos de la nueva categoría
  * @returns Categoría creada
  */
-export const createCategory = async (
-  categoryData: CreateMenuCategoryInput
-) => {
+export const createCategory = async (categoryData: CreateMenuCategoryInput) => {
   const { data } = await axiosClient.post<ApiResponse<MenuCategory>>(
-    '/menus/categories',
-    categoryData
+    "/menus/categories",
+    categoryData,
   );
   return data;
 };
 
 /**
  * PATCH /menus/categories/:id
- * 
- * Actualiza una categoría existente
- * 
+ *
+ * Update a existing menu category
+ *
  * @param id - ID de la categoría
  * @param categoryData - Datos a actualizar
  * @returns Categoría actualizada
  */
 export const updateCategory = async (
   id: number,
-  categoryData: UpdateMenuCategoryInput
+  categoryData: UpdateMenuCategoryInput,
 ) => {
   const { data } = await axiosClient.patch<ApiResponse<MenuCategory>>(
     `/menus/categories/${id}`,
-    categoryData
+    categoryData,
   );
   return data;
 };
 
 /**
  * DELETE /menus/categories/:id
- * 
- * Elimina una categoría (soft delete)
- * 
+ *
+ * Delete a menu category (request is soft delete)
+ *
  * @param id - ID de la categoría
  */
 export const deleteCategory = async (id: number) => {
   const { data } = await axiosClient.delete<ApiResponse<null>>(
-    `/menus/categories/${id}`
+    `/menus/categories/${id}`,
   );
   return data;
 };
 
 /**
  * DELETE /menus/categories/bulk
- * 
- * Elimina múltiples categorías (soft delete)
- * 
- * @param ids - Array de IDs de categorías a eliminar
+ *
+ * Delete multiple categories
+ *
+ * @param ids - Menu Categories array of IDs to delete
  */
 export const bulkDeleteCategories = async (ids: number[]) => {
-  const { data } = await axiosClient.delete<ApiResponse<{ deletedCount: number }>>(
-    '/menus/categories/bulk',
-    { data: { ids } }
-  );
+  const { data } = await axiosClient.delete<
+    ApiResponse<{ deletedCount: number }>
+  >("/menus/categories/bulk", { data: { ids } });
   return data;
 };
 
@@ -139,80 +136,80 @@ export const bulkDeleteCategories = async (ids: number[]) => {
 
 /**
  * GET /menus/items
- * 
- * Obtiene lista de items del menú con paginación
- * 
- * @param params - Parámetros de paginación
- * @returns Lista paginada de items
+ *
+ * Get paginated listed of menu items
+ *
+ * @param params - Params of pagination
+ * @returns Paginated list of menu items
  */
 export const getMenuItems = async (params?: PaginationParams) => {
   const { data } = await axiosClient.get<
     ApiResponse<PaginatedResponse<MenuItem>>
-  >('/menus/items', { params });
+  >("/menus/items", { params });
   return data;
 };
 
 /**
  * GET /menus/items/:id
- * 
- * Obtiene un item del menú por su ID
- * 
- * @param id - ID del item
- * @returns Datos del item
+ *
+ * Get a menu item by ID
+ *
+ * @param id - Menu Item ID
+ * @returns Data of Menu Item
  */
 export const getMenuItemById = async (id: number) => {
   const { data } = await axiosClient.get<ApiResponse<MenuItem>>(
-    `/menus/items/${id}`
+    `/menus/items/${id}`,
   );
   return data;
 };
 
 /**
  * POST /menus/items
- * 
- * Crea un nuevo item del menú
- * 
- * @param itemData - Datos del nuevo item
- * @returns Item creado
+ *
+ * Create a new menu item
+ *
+ * @param itemData - New Menu Item Data
+ * @returns create Menu Item
  */
 export const createMenuItem = async (itemData: CreateMenuItemInput) => {
   const { data } = await axiosClient.post<ApiResponse<MenuItem>>(
-    '/menus/items',
-    itemData
+    "/menus/items",
+    itemData,
   );
   return data;
 };
 
 /**
  * PATCH /menus/items/:id
- * 
- * Actualiza un item del menú existente
- * 
- * @param id - ID del item
- * @param itemData - Datos a actualizar
- * @returns Item actualizado
+ *
+ * Update a exiting Menu Item
+ *
+ * @param id - Menu Item ID
+ * @param itemData - Data to update
+ * @returns Updated Menu Item
  */
 export const updateMenuItem = async (
   id: number,
-  itemData: UpdateMenuItemInput
+  itemData: UpdateMenuItemInput,
 ) => {
   const { data } = await axiosClient.patch<ApiResponse<MenuItem>>(
     `/menus/items/${id}`,
-    itemData
+    itemData,
   );
   return data;
 };
 
 /**
  * DELETE /menus/items/:id
- * 
- * Elimina un item del menú (soft delete)
- * 
- * @param id - ID del item
+ *
+ * Delete a Menu Item
+ *
+ * @param id - Menu Item ID
  */
 export const deleteMenuItem = async (id: number) => {
   const { data } = await axiosClient.delete<ApiResponse<null>>(
-    `/menus/items/${id}`
+    `/menus/items/${id}`,
   );
   return data;
 };
