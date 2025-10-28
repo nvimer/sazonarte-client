@@ -55,6 +55,13 @@ const DashboardPage = () => {
             </div>
           )}
 
+          {/* Navigation to modules */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3>Módulos</h3>
+            <Button onClick={() => navigate("/tables")}>Gestionar Mesas</Button>
+            <Button onClick={() => navigate("/menu")}>Menu</Button>
+          </div>
+
           {/* Logout Button*/}
           <div className="mt-6 pt-6 border-t border-gray-200">
             <button
@@ -63,12 +70,6 @@ const DashboardPage = () => {
             >
               Cerrar Sesión
             </button>
-          </div>
-
-          {/* Navigation to modules */}
-          <div>
-            <h3>Módulos</h3>
-            <Button onClick={() => navigate("/tables")}>Gestionar Mesas</Button>
           </div>
         </div>
       </div>
