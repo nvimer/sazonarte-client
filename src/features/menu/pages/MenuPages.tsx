@@ -34,7 +34,7 @@ export function MenuPage() {
 
     const handleCategorySuccess = () => {
         setShowCategoryForm(false);
-        setEditingItem(undefined);
+        setEditingCategory(undefined);
     };
 
     return (
@@ -81,7 +81,7 @@ export function MenuPage() {
                                     onSuccess={handleCategorySuccess}
                                     onCancel={() => {
                                         setShowCategoryForm(false);
-                                        setEditingItem(undefined);
+                                        setEditingCategory(undefined);
                                     }}
                                 />
                             </div>

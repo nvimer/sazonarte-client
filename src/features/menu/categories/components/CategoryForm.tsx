@@ -1,12 +1,12 @@
-import type { MenuCategory } from "@/types";
-import { useCreateCategory, useUpdateCategory } from "../hooks";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@/components";
+import type { MenuCategory } from "@/types";
 import {
     createCategorySchema,
     type CreateCategoryInput,
-} from "../schemas/categoriesSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@/components";
+} from "../schemas/categorySchemas";
+import { useCreateCategory, useUpdateCategory } from "../hooks";
 
 interface CategoryFormProps {
     category?: MenuCategory;
@@ -20,9 +20,9 @@ export function CategoryForm({
     onCancel,
 }: CategoryFormProps) {
     const { mutate: createCategory, isPending: isCreating } = useCreateCategory();
-    const { mutate: updateCategory, isPending: isEditing } = useUpdateCategory();
+    const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory();
 
-    const isPending = isCreating || isEditing;
+    const isLoading = isCreating || isUpdating;
 
     const {
         register,
@@ -35,20 +35,23 @@ export function CategoryForm({
             ? {
                 name: category.name,
                 description: category.description || "",
+                order: category.order,
             }
             : {
                 name: "",
                 description: "",
+                order: 0,
             },
     });
 
     const onSubmit = (data: CreateCategoryInput) => {
-        if (isEditing && category) {
+        if (category) {
             // Update existing category
             updateCategory(
                 { id: category.id, ...data },
                 {
                     onSuccess: () => {
+                        alert("¡Mesa Actualizada!");
                         reset();
                         onSuccess?.();
                     },
@@ -61,6 +64,7 @@ export function CategoryForm({
             // Create Category
             createCategory(data, {
                 onSuccess: () => {
+                    alert("¡Mesa Creada!");
                     reset();
                     onSuccess?.();
                 },
@@ -72,7 +76,7 @@ export function CategoryForm({
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {/* Category Name  */}
             <div>
                 <label
@@ -96,7 +100,7 @@ export function CategoryForm({
             {/* Description */}
             <div>
                 <label
-                    htmlFor="name"
+                    htmlFor="description"
                     className="block text-sm font-medium text-gray-700 mb-1"
                 >
                     Descripción
@@ -108,30 +112,51 @@ export function CategoryForm({
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     placeholder="Descripción de la categoría"
                 />
-                {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                {errors.description && (
+                    <p className="text-red-500 text-sm mt-1">
+                        {errors.description.message}
+                    </p>
+                )}
+            </div>
+
+            {/* Order */}
+            <div>
+                <label
+                    htmlFor="order"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                    Órden
+                </label>
+                <Input
+                    id="order"
+                    type="number"
+                    {...register("order", { valueAsNumber: true })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    placeholder="Ej. 10"
+                />
+                {errors.order && (
+                    <p className="text-red-500 text-sm mt-1">{errors.order.message}</p>
                 )}
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-4">
+            <div className="flex gap-2">
                 <Button
                     size="sm"
                     type="submit"
-                    isLoading={isPending}
-                    disabled={isPending}
-                    onClick={handleSubmit(onSubmit)}
+                    variant="primary"
+                    disabled={isLoading}
                     fullWidth
                 >
-                    {isPending ? "Guardando..." : category ? "Actualizar" : "Crear"}
+                    {isLoading ? "Guardando..." : category ? "Actualizar" : "Crear"}
                 </Button>
                 {onCancel && (
                     <Button
-                        fullWidth
                         size="sm"
                         type="button"
                         variant="secondary"
                         onClick={onCancel}
+                        fullWidth
                     >
                         Cancelar
                     </Button>

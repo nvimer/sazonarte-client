@@ -3,7 +3,7 @@ export interface MenuCategory {
   name: string;
   description?: string;
   order: number;
-  items: MenuItem[];
+  items?: MenuItem[];
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
@@ -13,11 +13,13 @@ export interface MenuCategory {
 export interface CreateMenuCategoryInput {
   name: string;
   description?: string;
+  order: number;
 }
 
 export interface UpdateMenuCategoryInput {
   name?: string;
   description?: string;
+  order?: number;
 }
 export interface MenuItem {
   id: number;
