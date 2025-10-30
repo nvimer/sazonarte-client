@@ -21,6 +21,7 @@ export interface UpdateMenuCategoryInput {
   description?: string;
   order?: number;
 }
+
 export interface MenuItem {
   id: number;
   categoryId: number;
@@ -37,17 +38,17 @@ export interface MenuItem {
 }
 
 export interface CreateMenuItemInput {
-  categoryId: string;
+  categoryId: number;
   name: string;
   description?: string;
   price: string;
-  isAvailable: boolean;
-  isExtra: boolean;
+  isAvailable?: boolean;
+  isExtra?: boolean;
   imageUrl?: string;
 }
 
 export interface UpdateMenuItemInput {
-  categoryId?: string;
+  categoryId?: number;
   name?: string;
   description?: string;
   price?: string;

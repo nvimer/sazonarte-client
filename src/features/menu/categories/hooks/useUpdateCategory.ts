@@ -1,7 +1,7 @@
 import { menuApi } from "@/api";
 import { queryKeys } from "@/lib";
-import type { UpdateMenuCategoryInput } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { UpdateMenuItemInput } from "@/types";
 
 /**
  * useUpdateTable Hook
@@ -15,7 +15,7 @@ export function useUpdateCategory() {
         mutationFn: async ({
             id,
             ...data
-        }: UpdateMenuCategoryInput & { id: number }) => {
+        }: UpdateMenuItemInput & { id: number }) => {
             const response = await menuApi.updateCategory(id, data);
             return response.data;
         },
