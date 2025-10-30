@@ -1,19 +1,10 @@
-/**
- * TIPOS DE MESA
- * Basados en el modelo Table de Prisma
- */
-
 import { TableStatus } from "./enums";
 
-/**
- * Mesa
- * Sincronizado con: model Table en Prisma
- */
 export interface Table {
   id: number;
-  number: string; // Número de mesa (ej: "1", "A1", "VIP-1")
+  number: string; // Number of Table
   status: TableStatus;
-  location?: string; // Ubicación (ej: "Terraza", "Salón principal")
+  location?: string;
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
@@ -21,18 +12,18 @@ export interface Table {
 }
 
 /**
- * Datos para crear una mesa
- * Usado en POST /tables
+ * Data for creating a table
+ * Used in POST /tables
  */
 export interface CreateTableInput {
   number: string;
-  status?: TableStatus; // Opcional, default AVAILABLE
+  status?: TableStatus;
   location?: string;
 }
 
 /**
- * Datos para actualizar una mesa
- * Usado en PUT /tables/:id
+ * Data for creating a table
+ * Used in PATCH /tables/:id
  */
 export interface UpdateTableInput {
   number?: string;
@@ -41,8 +32,8 @@ export interface UpdateTableInput {
 }
 
 /**
- * Datos para actualizar solo el estado de una mesa
- * Usado en PATCH /tables/:id/status
+ * Data for update only the state of the table
+ * Used in the PATCH /tables/:id/status
  */
 export interface UpdateTableStatusInput {
   status: TableStatus;

@@ -3,6 +3,15 @@ import type { CreateTableInput } from "../schemas/tableSchemas";
 import { tablesApi } from "@/api";
 import { queryKeys } from "@/lib";
 
+/**
+ * useCreateTable Hook
+ *
+ * Create a new table
+ *
+ * @example
+ * const { mutation: createTable } = useCreateTable();
+ * createTable({ id: 1, number: 3, location: 'Entrada Principal', status: 'AVAILABLE'})
+ */
 export function useCreateTable() {
   const queryClient = useQueryClient();
 

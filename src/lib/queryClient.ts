@@ -40,10 +40,17 @@ export const queryKeys = {
     byStatus: (status: string) => ["tables", { status }] as const,
   },
 
-  // Menu
+  // MenuCategories
+  categories: {
+    all: ["categories"] as const,
+    detail: (id: number) => ["categories", id] as const,
+  },
+
+  // Menu Items
   menu: {
     all: ["menu"] as const,
-    categories: ["menu", "categories"] as const,
-    items: ["menu", "items"] as const,
+    detail: (id: number) => ["menu", id] as const,
+    byCategory: (categoryId: number) => ["menu", { categoryId }] as const,
+    available: () => ["menu", { available: true }] as const,
   },
 };

@@ -72,7 +72,11 @@ export function TablesPage() {
                             Gestionar mesas del restaurante
                         </p>
                     </div>
-                    <Button variant="primary" onClick={() => setShowForm(!showForm)}>
+                    <Button
+                        size="sm"
+                        variant="primary"
+                        onClick={() => setShowForm(!showForm)}
+                    >
                         {showForm ? "Cancelar" : "Nueva Mesa"}
                     </Button>
                 </div>

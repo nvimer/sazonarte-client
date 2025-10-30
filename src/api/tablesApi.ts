@@ -1,8 +1,8 @@
 /**
  * TABLES API SERVICE
  *
- * Servicios relacionados con mesas del restaurante.
- * Endpoints base: /tables/*
+ * Services related with tables of restaurant
+ * Base Endpoints: /tables/*
  */
 
 import { axiosClient } from "./axiosClient";
@@ -19,10 +19,10 @@ import type {
 /**
  * GET /tables
  *
- * Obtiene lista de mesas con paginación
+ * Get a paginated listed of tables
  *
- * @param params - Parámetros de paginación
- * @returns Lista paginada de mesas
+ * @param params - Params of pagination
+ * @returns Paginated list of tables
  */
 export const getTables = async (params?: PaginationParams) => {
   const { data } = await axiosClient.get<PaginatedResponse<Table>>("/tables", {
@@ -34,10 +34,10 @@ export const getTables = async (params?: PaginationParams) => {
 /**
  * GET /tables/:id
  *
- * Obtiene una mesa por su ID
+ * Get a table by ID
  *
- * @param id - ID de la mesa
- * @returns Datos de la mesa
+ * @param id -  Table ID
+ * @returns Data of Table
  */
 export const getTableById = async (id: number) => {
   const { data } = await axiosClient.get<ApiResponse<Table>>(`/tables/${id}`);
@@ -47,10 +47,10 @@ export const getTableById = async (id: number) => {
 /**
  * POST /tables
  *
- * Crea una nueva mesa
+ * Create a new table
  *
- * @param tableData - Datos de la nueva mesa
- * @returns Mesa creada
+ * @param tableData - Data of new table
+ * @returns Created Table
  */
 export const createTable = async (tableData: CreateTableInput) => {
   const { data } = await axiosClient.post<ApiResponse<Table>>(
@@ -63,11 +63,11 @@ export const createTable = async (tableData: CreateTableInput) => {
 /**
  * PUT /tables/:id
  *
- * Actualiza una mesa existente
+ * Updated a existing table
  *
- * @param id - ID de la mesa
- * @param tableData - Datos a actualizar
- * @returns Mesa actualizada
+ * @param id - Table ID
+ * @param tableData - Data to update
+ * @returns Updated Table
  */
 export const updateTable = async (id: number, tableData: UpdateTableInput) => {
   const { data } = await axiosClient.patch<ApiResponse<Table>>(
@@ -80,9 +80,9 @@ export const updateTable = async (id: number, tableData: UpdateTableInput) => {
 /**
  * DELETE /tables/:id
  *
- * Elimina una mesa (soft delete)
+ * Delete a table (soft delete)
  *
- * @param id - ID de la mesa
+ * @param id - Table ID
  */
 export const deleteTable = async (id: number) => {
   const { data } = await axiosClient.delete<ApiResponse<null>>(`/tables/${id}`);
@@ -92,11 +92,11 @@ export const deleteTable = async (id: number) => {
 /**
  * PATCH /tables/:id/status
  *
- * Actualiza solo el estado de una mesa
+ * Update only the state of table
  *
- * @param id - ID de la mesa
- * @param statusData - Nuevo estado
- * @returns Mesa actualizada
+ * @param id - Table ID
+ * @param statusData - New table status
+ * @returns Updated Table
  */
 export const updateTableStatus = async (
   id: number,
