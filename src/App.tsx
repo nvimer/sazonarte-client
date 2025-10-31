@@ -3,9 +3,10 @@ import { useAuth } from "./hooks";
 import LoginPage from "./pages/LoginPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import DashboardPage from "./pages/DashboardPage";
-import ComponentsTestPage from "./pages/ComponentsTestPage";
+// import ComponentsTestPage from "./pages/ComponentsTestPage";
 import { TablesPage } from "./features/tables";
 import { MenuPage } from "./features/menu/pages/MenuPages";
+import { TestDesignPage } from "./pages/TestDesignPage";
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -21,8 +22,11 @@ const App = () => {
           }
         />
 
+        {/* Temporary test components page*/}
+        {/*        <Route path="/test-components" element={<ComponentsTestPage />} />*/}
+
         {/* Temporary test page*/}
-        <Route path="/test-components" element={<ComponentsTestPage />} />
+        <Route path="/test-design" element={<TestDesignPage />} />
 
         {/* Protected Route: Dashboeard (Home)*/}
         <Route
