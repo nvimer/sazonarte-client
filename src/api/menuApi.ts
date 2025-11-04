@@ -30,9 +30,10 @@ import type {
  * @returns Paginated listed of Menu Categories
  */
 export const getCategories = async (params?: PaginationParams) => {
-  const { data } = await axiosClient.get<
-    ApiResponse<PaginatedResponse<MenuCategory>>
-  >("/menu/categories", { params });
+  const { data } = await axiosClient.get<PaginatedResponse<MenuCategory>>(
+    "/menu/categories",
+    { params },
+  );
   return data;
 };
 
@@ -143,9 +144,10 @@ export const bulkDeleteCategories = async (ids: number[]) => {
  * @returns Paginated list of menu items
  */
 export const getMenuItems = async (params?: PaginationParams) => {
-  const { data } = await axiosClient.get<
-    ApiResponse<PaginatedResponse<MenuItem>>
-  >("/menu/items", { params });
+  const { data } = await axiosClient.get<PaginatedResponse<MenuItem>>(
+    "/menu/items",
+    { params },
+  );
   return data;
 };
 
