@@ -30,11 +30,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
     };
 
     return (
-        <Card
-            padding="md"
-            shadow="md"
-            className="hover:shadow-lg transition-shadow"
-        >
+        <Card padding="md" className="hover:shadow-lg transition-shadow">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <div>
