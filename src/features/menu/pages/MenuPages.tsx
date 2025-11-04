@@ -3,37 +3,60 @@ import { useState } from "react";
 import { useCategories, useDeleteCategory } from "../categories/hooks";
 import { CategoryForm } from "../categories/components/CategoryForm";
 import { CategoryCard } from "../categories/components/CategoryCard";
-import { Button } from "@/components";
+import { Button, Card } from "@/components";
 import { useItems } from "../items/hooks/useItems";
 import { useDeleteItem } from "../items/hooks/useDeleteItem";
 import { MenuItemCard } from "../items/components/MenuItemCard";
 import { MenuItemForm } from "../items/components/MenuItemForm";
+import { DashboardLayout } from "@/layouts/DashboardLayout";
+import { FolderOpen, Grid3x3, ListFilter, Plus } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
 
 type Tab = "categories" | "items";
 
+/**
+ * MenuPage Component
+ *
+ * Main page for menu magement (categories and items)
+ *
+ * Features /
+ * - Tab navigation (Categories / Items)
+ * - CRUD operations for categories
+ * - CRUD operations for menu items
+ * - Filter items by category
+ */
 export function MenuPage() {
+    // ======== STATE =========
+    // Tab state
     const [activeTab, setActiveTab] = useState<Tab>("items");
+
+    // Category state
     const [showCategoryForm, setShowCategoryForm] = useState(false);
     const [editingCategory, setEditingCategory] = useState<
         MenuCategory | undefined
     >();
+
+    // Item State
     const [showItemForm, setShowItemForm] = useState(false);
     const [editingItem, setEditingItem] = useState<MenuItem | undefined>();
     const [filterCategory, setFilterCategory] = useState<string>("");
 
-    // Categories
+    // ======== QUERIES =========
+    // Fetch Categories
     const { data: categories, isLoading: loadingCategories } = useCategories();
-    const { mutate: deleteCategory, isPending: isPending } = useDeleteCategory();
+    const { mutate: deleteCategory } = useDeleteCategory();
 
-    // Items
+    // Fetch Items
     const { data: items, isLoading: loadingItems } = useItems();
     const { mutate: deleteItem } = useDeleteItem();
 
+    // ========== COMPUTED VALUES ==========
     // Filter Items by Category
     const filteredItems = filterCategory
         ? items?.filter((item) => String(item.categoryId) === filterCategory)
         : items;
 
+    // ========= EVENT HANDLERS - CATEGORIES ============
     const handleEditCategory = (category: MenuCategory) => {
         setEditingCategory(category);
         setShowCategoryForm(true);
@@ -49,6 +72,8 @@ export function MenuPage() {
         setShowCategoryForm(false);
         setEditingCategory(undefined);
     };
+
+    // ======== EVENT HANDLERS - ITEMS =========
 
     const handleEditItem = (item: MenuItem) => {
         setEditingItem(item);
@@ -66,165 +91,225 @@ export function MenuPage() {
         setEditingItem(undefined);
     };
 
+    // ======= MAIN RENDER ========
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="mb-6">
-                    <h1 className="text-3xl font-bold text-gray-800">Gestión de Menú</h1>
-                    <p className="text-gray-600 mt-1">
+        <DashboardLayout>
+            {/* ========= PAGE HEADER ======== */}
+            <div className="flex items-center justify-between mb-12">
+                <div>
+                    <h1 className="text-4xl font-semibold text-neutral-800">
+                        Gestión de Menú
+                    </h1>
+                    <p className="text-[15px] text-neutral-600 font-light">
                         Administra categorías e items del menú
                     </p>
                 </div>
+            </div>
 
-                {/* Tabs */}
-                <div className="mb-6 border-b border-gray-200">
-                    <nav className="flex gap-4">
-                        <Button
+            {/* ======== TAB NAVIGATION ========== */}
+            <Card variant="elevated" padding="md" className="mb-8">
+                <div className="flex items-center gap-4">
+                    {/* Items Tab */}
+                    <button
+                        onClick={() => setActiveTab("items")}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all font-medium ${activeTab === "items" ? "bg-primary-500 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                    >
+                        <Grid3x3 className="w-5 h-5" />
+                        Productos{" "}
+                        <Badge
                             size="sm"
-                            variant="primary"
-                            onClick={() => setActiveTab("items")}
+                            variant={activeTab === "items" ? "neutral" : "primary"}
                         >
-                            Items
-                        </Button>
-                        <Button
+                            {items?.length || 0}
+                        </Badge>
+                    </button>
+                    {/* Categories Tab */}
+                    <button
+                        onClick={() => setActiveTab("categories")}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all font-medium ${activeTab === "categories" ? "bg-primary-500 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                    >
+                        <FolderOpen className="w-5 h-5" />
+                        Categorías{" "}
+                        <Badge
                             size="sm"
-                            variant="primary"
-                            onClick={() => setActiveTab("categories")}
+                            variant={activeTab === "categories" ? "neutral" : "primary"}
                         >
-                            Categorías
-                        </Button>
-                    </nav>
+                            {categories?.length || 0}
+                        </Badge>
+                    </button>
                 </div>
+            </Card>
 
-                {/* TAB: Categories */}
-                {activeTab === "categories" && (
-                    <div>
-                        {/* Form */}
-                        {showCategoryForm && (
-                            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-                                <h2 className="text-xl font-semibold mb-4">
-                                    {editingCategory ? "Editar Categoría" : "Nueva Categoría"}
-                                </h2>
-                                <CategoryForm
-                                    category={editingCategory}
-                                    onSuccess={handleCategorySuccess}
-                                    onCancel={() => {
-                                        setShowCategoryForm(false);
-                                        setEditingCategory(undefined);
-                                    }}
-                                />
+            {/* ======== CONTENT TAB ========= */}
+            {activeTab === "categories" && (
+                <div>
+                    {/* Category Form */}
+                    {showCategoryForm && (
+                        <Card variant="elevated" padding="xl" className="mb-8">
+                            <h2 className="text-2xl font-semibold text-neutral-900 mb-6">
+                                {editingCategory ? "Editar Categoría" : "Nueva Categoría"}
+                            </h2>
+                            <CategoryForm
+                                category={editingCategory}
+                                onSuccess={handleCategorySuccess}
+                                onCancel={() => {
+                                    setShowCategoryForm(false);
+                                    setEditingCategory(undefined);
+                                }}
+                            />
+                        </Card>
+                    )}
+
+                    {/* New Category Button */}
+                    {!showCategoryForm && (
+                        <div className="mb-8">
+                            <Button
+                                size="lg"
+                                variant="primary"
+                                onClick={() => setShowCategoryForm(true)}
+                            >
+                                <Plus className="w-5 h-5 mr-2" /> Nueva Categoría
+                            </Button>
+                        </div>
+                    )}
+
+                    {/* Categories Grid*/}
+                    {loadingCategories ? (
+                        <div className="text-center py-16">
+                            <div className="animate-spin rounded-full h-12 w-12 border-2 border-primary-200 border-t-primary-600 mx-auto mb-4">
+                                <p className="text-neutral-600 font-light">
+                                    Cargando Categorías...
+                                </p>
                             </div>
-                        )}
-
-                        {/* Button: New Category  */}
-                        {!showCategoryForm && (
-                            <div className="mb-6">
+                        </div>
+                    ) : categories?.length === 0 ? (
+                        <Card variant="elevated" padding="xl" className="text-center">
+                            <div className="py-12">
+                                <FolderOpen className="h-16 w-16 text-neutral-300 mx-auto mb-4" />
+                                <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                                    No hay categorías
+                                </h3>
+                                <p className="text-neutral-600 font-light mb-6">
+                                    Crea tu primera categoría para organizar el menú
+                                </p>
                                 <Button
-                                    size="sm"
                                     variant="primary"
                                     onClick={() => setShowCategoryForm(true)}
                                 >
-                                    Nueva Categoría
+                                    <Plus className="w-5 h-5 mr-2" />
+                                    Crear Primera Categoría
                                 </Button>
                             </div>
-                        )}
-
-                        {/* List all Categories */}
-                        {loadingCategories ? (
-                            <div className="text-center py-8">
-                                <p className="text-gray-500">Cargando Categorías...</p>
-                            </div>
-                        ) : categories?.data.length === 0 ? (
-                            <div className="text-center py-8">
-                                <p className="text-gray-500 py-8">No hay Categorías creadas </p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {categories?.data.map((category) => (
-                                    <CategoryCard
-                                        key={category.id}
-                                        category={category}
-                                        onEdit={handleEditCategory}
-                                        onDelete={handleDeleteCategory}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* TAB: Items */}
-                {activeTab === "items" && (
-                    <div>
-                        {/* Form */}
-                        {showItemForm && (
-                            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-                                <h2 className="text-xl font-semibold mb-4">
-                                    {editingItem ? "Editar Producto" : "Nuevo Producto"}
-                                </h2>
-                                <MenuItemForm
-                                    item={editingItem}
-                                    onSuccess={handleItemSuccess}
-                                    onCancel={() => {
-                                        setShowItemForm(false);
-                                        setEditingItem(undefined);
-                                    }}
+                        </Card>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {categories?.map((category) => (
+                                <CategoryCard
+                                    key={category.id}
+                                    category={category}
+                                    onEdit={handleEditCategory}
+                                    onDelete={handleDeleteCategory}
                                 />
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Controls */}
-                <div className="flex gap-4 mb-6">
-                    {!showItemForm && (
-                        <Button onClick={() => setShowItemForm(true)}>
-                            Nuevo Producto
-                        </Button>
+                            ))}
+                        </div>
                     )}
                 </div>
+            )}
 
-                {/* Filter By Category */}
+            {/* ======== TAB CONTENT: ITEMS ========= */}
+            {activeTab === "items" && (
+                <div>
+                    {/* Item Form */}
+                    {showItemForm && (
+                        <Card variant="elevated" padding="xl" className="mb-8">
+                            <h2 className="text-2xl font-semibold text-neutral-900 mb-4">
+                                {editingItem ? "Editar Producto" : "Nuevo Producto"}
+                            </h2>
+                            <MenuItemForm
+                                item={editingItem}
+                                onSuccess={handleItemSuccess}
+                                onCancel={() => {
+                                    setShowItemForm(false);
+                                    setEditingItem(undefined);
+                                }}
+                            />
+                        </Card>
+                    )}
+                </div>
+            )}
+
+            {/* Controls: New Item + Category Filter*/}
+            <div className="flex flex-wrap items-center gap-4 mb-8">
+                {/* New Product Button  */}
+                {!showItemForm && (
+                    <Button
+                        size="lg"
+                        variant="primary"
+                        onClick={() => setShowItemForm(true)}
+                    >
+                        <Plus className="w-5 h-5 mr-2" />
+                        Nuevo Producto
+                    </Button>
+                )}
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex items-center gap-3">
+                <ListFilter className="w-5 h-5 text-neutral-600" />
                 <select
                     value={filterCategory}
                     onChange={(e) => setFilterCategory(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="px-4 py-2.5 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-white text-neutral-900 font-medium text-sm"
                 >
                     <option value="">Todas las Categorías</option>
-                    {categories?.data.map((category) => (
+                    {categories?.map((category) => (
                         <option key={category.id} value={category.id}>
                             {category.name}
                         </option>
                     ))}
                 </select>
-
-                {/* Items List  */}
-                {loadingItems ? (
-                    <div className="text-center py-8">
-                        <p className="text-gray-500">Cargando Items...</p>
-                    </div>
-                ) : filteredItems?.length === 0 ? (
-                    <div className="text-center py-8">
-                        <p className="text-gray-500">
-                            {filterCategory
-                                ? "No hay Items en esta categoría."
-                                : "No hay items creados"}
-                        </p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredItems?.map((item) => (
-                            <MenuItemCard
-                                key={item.id}
-                                item={item}
-                                onEdit={handleEditItem}
-                                onDelete={handleDeleteItem}
-                            />
-                        ))}
-                    </div>
-                )}
             </div>
-        </div>
+
+            {/* Items Grid  */}
+            {loadingItems ? (
+                <div className="text-center py-16">
+                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-primary-200 border-t-primary-600 mx-auto mb-4"></div>
+                    <p className="text-neutral-600 font-light">Cargando Productos...</p>
+                </div>
+            ) : filteredItems?.length === 0 ? (
+                <Card variant="elevated" padding="xl" className="text-center">
+                    <div className="py-12">
+                        <Grid3x3 className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-neutral-900">
+                            {filterCategory
+                                ? "No hay Productos en esta categoría."
+                                : "No hay Productos"}
+                        </h3>
+                        <p className="text-neutral-600 font-light mb-6">
+                            {filterCategory
+                                ? "Intenta seleccionar otra categoría"
+                                : "Crea tu primer producto para el menú"}
+                        </p>
+                        {!filterCategory && (
+                            <Button variant="primary" onClick={() => setShowItemForm(true)}>
+                                <Plus className="w-5 h-5 mr-2" />
+                                Crear Primer Producto
+                            </Button>
+                        )}
+                    </div>
+                </Card>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {filteredItems?.map((item) => (
+                        <MenuItemCard
+                            key={item.id}
+                            item={item}
+                            onEdit={handleEditItem}
+                            onDelete={handleDeleteItem}
+                        />
+                    ))}
+                </div>
+            )}
+        </DashboardLayout>
     );
 }
