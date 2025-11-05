@@ -7,7 +7,9 @@ import {
 } from "../schemas/tableSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Input } from "@/components";
+import { Check, X } from "lucide-react";
 
+// ================ TYPES ==================
 interface TableFormProps {
     // If editing
     table?: Table;
@@ -19,22 +21,31 @@ interface TableFormProps {
  * TableForm Component
  *
  * Form to create or edit a table
+ *
+ * Features /
+ * - React Hook Form with Zod validation
+ * - Create or Edit mode
+ * - Success/Error handling
+ * - Loading states
  */
 export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
+    // ================== MODE DETECTION =================
     const isEditing = !!table;
 
+    // ====================== HOOKS ========================
     const { mutate: createTable, isPending: isCreating } = useCreateTable();
     const { mutate: updateTable, isPending: isUpdating } = useUpdateTable();
 
     const isPending = isCreating || isUpdating;
 
-    // React Hook Form setup
+    // ======= FORM SETUP ==========
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<CreateTableInput>({
         resolver: zodResolver(createTableSchema),
+        // Default values base on mode
         defaultValues: table
             ? {
                 number: table.number,
@@ -48,6 +59,7 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
             },
     });
 
+    // ================== FORM SUBMIT ======================
     const onSubmit = (data: CreateTableInput) => {
         if (isEditing && table) {
             // Update existing table
@@ -55,7 +67,6 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                 { id: table.id, ...data },
                 {
                     onSuccess: () => {
-                        alert("¡Mesa Actualizada!");
                         onSuccess?.();
                     },
                     onError: (error: any) => {
@@ -67,7 +78,6 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
             // Create new table
             createTable(data, {
                 onSuccess: () => {
-                    alert("¡Mesa Creada!");
                     onSuccess?.();
                 },
                 onError: (error: any) => {
@@ -77,13 +87,24 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
         }
     };
 
+    // =============== RENDER =================
     return (
-        <Card padding="md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">
-                {isEditing ? "Editar Mesa" : "Nueva Mesa"}
-            </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Table Number  */}
+        <Card variant="elevated" padding="xl">
+            {/* ================== FORM HEADER =============== */}
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
+                    {isEditing ? "Editar Mesa" : "Nueva Mesa"}
+                </h2>
+                <p>
+                    {isEditing
+                        ? "Modifica los datos de la mesa"
+                        : "Completa los datos para crear una nueva mesa"}
+                </p>
+            </div>
+
+            {/* ======================== FORM ==================== */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Table Number Input */}
                 <Input
                     label="Número de mesa"
                     type="number"
@@ -91,35 +112,41 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                     {...register("number", { valueAsNumber: false })}
                     error={errors.number?.message}
                 />
-                {/* Location */}
+                {/* Location Input */}
                 <Input
                     label="Ubicación"
                     type="text"
-                    placeholder="Entrada"
+                    placeholder="Ej. Entrada, Sala, Ventana..."
                     {...register("location")}
                     error={errors.location?.message}
                 />
 
-                {/* <Input /> */}
-                {/* Actions */}
-                <div className="flex gap-2 pt-4">
+                {/* ================== ACTIONS BUTTON ============= */}
+                <div className="flex gap-3 pt-6">
+                    {/* Submit Button */}
                     <Button
                         type="submit"
                         variant="primary"
+                        size="lg"
                         isLoading={isPending}
                         disabled={isPending}
                         fullWidth
                     >
-                        {isEditing ? "Actualizar" : "Crear"}
+                        {!isPending && <Check className="w-5 h-5 mr-2" />}
+                        {isEditing ? "Actualizar Mesa" : "Crear Mesa"}
                     </Button>
+
+                    {/* Cancel Button */}
                     {onCancel && (
                         <Button
                             type="button"
-                            variant="secondary"
+                            variant="ghost"
+                            size="lg"
                             onClick={onCancel}
                             disabled={isPending}
                             fullWidth
                         >
+                            <X className="w-5 h-5 mr-2" />
                             Cancelar
                         </Button>
                     )}

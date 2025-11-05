@@ -138,16 +138,11 @@ export function TablesPage() {
             {/* ========== TABLE FORM ==============*/}
             {/*Conditional form display */}
             {showForm && (
-                <Card variant="elevated" padding="xl" className="mb-12">
-                    <h2 className="text-2xl font-semibold text-neutral-900 mb-6">
-                        {editingTable ? "Editar Mesa" : "Nueva Mesa"}
-                    </h2>
-                    <TableForm
-                        table={editingTable}
-                        onSuccess={handleFormClose}
-                        onCancel={handleFormClose}
-                    />
-                </Card>
+                <TableForm
+                    table={editingTable}
+                    onSuccess={handleFormClose}
+                    onCancel={handleFormClose}
+                />
             )}
 
             {/* ========== STATUS FILTER ============ */}

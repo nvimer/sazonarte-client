@@ -2,101 +2,176 @@ import { TableStatus, type Table } from "@/types";
 import { useUpdateTableStatus } from "../hooks";
 import { useDeleteTable } from "../hooks/useDeleteTable";
 import { Button, Card } from "@/components";
-import { TableStatusBadge } from "./TableStatusBadge";
+import { MapPin, Edit2, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
 
+// ==================== TYPES / TIPOS ====================
 interface TableCardProps {
     table: Table;
     onEdit: (table: Table) => void;
 }
 
 /**
- * TableCard component
+ * TableCard Component
  *
- * Displays a single table with actions
+ * Displays a single table with status and actions
+ *
+ * Features / Caracter?sticas:
+ * - Visual table representation
+ * - Status badge with colors
+ * - Quick status change buttons
+ * - Edit and delete actions
  */
 export function TableCard({ table, onEdit }: TableCardProps) {
+    // ==================== HOOKS ====================
     const { mutate: updateStatus, isPending: isUpdatingStatus } =
         useUpdateTableStatus();
     const { mutate: deleteTable, isPending: isDeleting } = useDeleteTable();
 
+    // ==================== EVENT HANDLERS ====================
+    // Handle status change
     const handleStatusChange = (newStatus: TableStatus) => {
         updateStatus({ id: table.id, status: newStatus });
     };
 
+    // Handle delete with confirmation
     const handleDelete = () => {
-        if (window.confirm("¿Eliminar esta mesa?")) {
+        if (window.confirm("¿Estás seguro de eliminar esta mesa?")) {
             deleteTable(table.id);
         }
     };
 
+    // ==================== STATUS VARIANTS  ====================
+    // Map table status to badge variant
+    const statusConfig = {
+        [TableStatus.AVAILABLE]: {
+            variant: "success" as const,
+            label: "Disponible",
+            color: "bg-green-50 border-green-200",
+        },
+        [TableStatus.OCCUPIED]: {
+            variant: "error" as const,
+            label: "Ocupada",
+            color: "bg-red-50 border-red-200",
+        },
+        [TableStatus.NEEDS_CLEANING]: {
+            variant: "warning" as const,
+            label: "Limpieza",
+            color: "bg-yellow-50 border-yellow-200",
+        },
+    };
+
+    const currentStatus = statusConfig[table.status];
+
+    // ==================== RENDER ====================
     return (
-        <Card padding="md" className="hover:shadow-lg transition-shadow">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-                <div>
-                    <h3 className="text-2xl font-bold text-gray-900">Mesa</h3>
-                    <p className="text-sm text-gray-600">Número: {table.number}</p>
+        <Card
+            variant="elevated"
+            padding="lg"
+            className={`transition-all duration-300 hover:shadow-xl border-2 ${currentStatus.color}`}
+        >
+            {/* ==================== HEADER ==================== */}
+            <div className="flex items-start justify-between mb-6">
+                {/* Table Number Display */}
+                <div className="flex items-center gap-4">
+                    {/* Large table number icon */}
+                    <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center border-2 border-primary-200">
+                        <span className="text-2xl font-bold text-primary-700">
+                            {table.number}
+                        </span>
+                    </div>
+
+                    {/* Table info */}
+                    <div>
+                        <h3 className="text-xl font-semibold text-neutral-900 mb-1">
+                            Mesa {table.number}
+                        </h3>
+                        {/* Location with icon  */}
+                        {table.location && (
+                            <div className="flex items-center gap-1.5 text-neutral-600">
+                                <MapPin className="w-4 h-4" />
+                                <span className="text-sm font-light">{table.location}</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
-                <TableStatusBadge status={table.status} />
+
+                {/* Status Badge */}
+                <Badge variant={currentStatus.variant} size="md">
+                    {currentStatus.label}
+                </Badge>
             </div>
-            {/* Status Action */}
-            <div className="space-y-2 mb-4">
-                <p className="text-sm text-gray-600 font-medium mb-2">
-                    Cambiar Estado:
+
+            {/* ==================== QUICK STATUS ACTIONS  ==================== */}
+            <div className="mb-6">
+                <p className="text-sm font-medium text-neutral-700 mb-3">
+                    Cambiar estado:
                 </p>
-                <div className="flex flex-wrap gap-2">
+
+                {/* Status change buttons grid */}
+                <div className="grid grid-cols-3 gap-2">
+                    {/* Available Button */}
                     {table.status !== TableStatus.AVAILABLE && (
-                        <Button
-                            size="sm"
-                            variant="secondary"
+                        <button
                             onClick={() => handleStatusChange(TableStatus.AVAILABLE)}
                             disabled={isUpdatingStatus}
+                            className="px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Disponible
-                        </Button>
+                        </button>
                     )}
+
+                    {/* Occupied Button */}
                     {table.status !== TableStatus.OCCUPIED && (
-                        <Button
-                            size="sm"
-                            variant="secondary"
+                        <button
                             onClick={() => handleStatusChange(TableStatus.OCCUPIED)}
                             disabled={isUpdatingStatus}
+                            className="px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Ocupada
-                        </Button>
+                        </button>
                     )}
+
+                    {/* Cleaning Button  */}
                     {table.status !== TableStatus.NEEDS_CLEANING && (
-                        <Button
-                            size="sm"
-                            variant="secondary"
+                        <button
                             onClick={() => handleStatusChange(TableStatus.NEEDS_CLEANING)}
                             disabled={isUpdatingStatus}
+                            className="px-3 py-2 text-sm font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Limpieza
-                        </Button>
+                        </button>
                     )}
                 </div>
-                {/* Edit & Delete Actions */}
-                <div className="flex gap-2 pt-4 border-t border-gray-200">
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => onEdit(table)}
-                        fullWidth
-                    >
-                        Editar
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                        isLoading={isDeleting}
-                        fullWidth
-                    >
-                        Eliminar
-                    </Button>
-                </div>
+            </div>
+
+            {/* ==================== MAIN ACTIONS ==================== */}
+            <div className="flex gap-3 pt-6 border-t border-neutral-100">
+                {/* Edit Button */}
+                <Button
+                    variant="ghost"
+                    size="md"
+                    onClick={() => onEdit(table)}
+                    className="flex-1 group"
+                >
+                    <Edit2 className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Editar
+                </Button>
+
+                {/* Delete Button */}
+                <Button
+                    variant="ghost"
+                    size="md"
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                    isLoading={isDeleting}
+                    className="flex-1 text-red-600 hover:bg-red-50 hover:text-red-700 group"
+                >
+                    {!isDeleting && (
+                        <Trash2 className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                    )}
+                    Eliminar
+                </Button>
             </div>
         </Card>
     );
