@@ -6,6 +6,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { TablesPage } from "./features/tables";
 import { MenuPage } from "./features/menu/pages/MenuPages";
 import { TestDesignPage } from "./pages/TestDesignPage";
+import { LandingPage } from "./pages";
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -13,6 +14,10 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* =============== PUBLIC ROUTES =============== */}
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+
         {/* Public Route: Login */}
         <Route
           path="/login"
@@ -21,15 +26,10 @@ const App = () => {
           }
         />
 
-        {/* Temporary test components page*/}
-        {/*        <Route path="/test-components" element={<ComponentsTestPage />} />*/}
-
-        {/* Temporary test page*/}
-        <Route path="/test-design" element={<TestDesignPage />} />
-
-        {/* Protected Route: Dashboeard (Home)*/}
+        {/* ============= PROTECTED ROUTES ============== */}
+        {/* Dashboard (Home)*/}
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <PrivateRoute>
               <DashboardPage />
@@ -57,7 +57,10 @@ const App = () => {
           }
         />
 
+        {/* Temporary test page*/}
+        <Route path="/test-design" element={<TestDesignPage />} />
         {/* Fallback: Redirect to home or login*/}
+
         <Route
           path="*"
           element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
