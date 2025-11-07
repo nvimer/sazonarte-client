@@ -4,28 +4,47 @@ import { useUpdateItem } from "../hooks/useUpdateItem";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createItemSchema } from "../schemas/itemsSchemas";
-import { Button, Input } from "@/components";
+import { Button, Card, Input } from "@/components";
 import { useCategories } from "../../categories/hooks";
+import { Check, ImageIcon, X } from "lucide-react";
 
+// ===== TYPES ======
 interface MenuItemFormProps {
+    // if editing
     item?: MenuItem;
     onSuccess?: () => void;
     onCancel?: () => void;
 }
 
+/**
+ * MenuItemForm Component
+ *
+ * Form to create or edit a menu item
+ *
+ * Features /
+ * - React Hook Form with zod validation
+ * - Create or Edit mode
+ * - Category selection
+ * - Price, availability, and extra toggles
+ * - Image URL input
+ * - Success/Error handling
+ */
 export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
+    // ============== HOOK ============
     const { mutate: createMenuItem, isPending: isCreating } = useCreateItem();
     const { mutate: updateMenuItem, isPending: isUpdating } = useUpdateItem();
     const { data: categories, isLoading: loadingCategories } = useCategories();
 
     const isLoading = isCreating || isUpdating;
 
+    // ============== FORM SETUP ============
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<CreateMenuItemInput>({
         resolver: zodResolver(createItemSchema),
+        // Default values based on mode
         defaultValues: item
             ? {
                 name: item.name,
@@ -43,14 +62,14 @@ export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
             },
     });
 
+    // ================= FORM SUBMIT ========================
     const onSubmit = (data: CreateMenuItemInput) => {
         if (item) {
-            // Update
+            // Update existing item
             updateMenuItem(
                 { id: item.id, ...data },
                 {
                     onSuccess: () => {
-                        alert("¡Producto Actualizado!");
                         onSuccess?.();
                     },
                     onError: (error: any) => {
@@ -59,160 +78,184 @@ export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
                 },
             );
         } else {
+            // Create new item
             createMenuItem(data, {
                 onSuccess: () => {
-                    alert("¡Producto Creado!");
                     onSuccess?.();
+                },
+                onError: (error: any) => {
+                    alert(`Error ${error.response?.data?.message || error.message}`);
                 },
             });
         }
     };
 
+    // ========== RENDER ==========
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name */}
-            <div>
-                <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Nombre *
-                </label>
+        <Card variant="elevated" padding="xl">
+            {/* =============== FORM HEADER ================== */}
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
+                    {item ? "Editar Producto" : "Nuevo Producto"}
+                </h2>
+                <p className="text-neutral-600 font-light">
+                    {item
+                        ? "Modifica los datos del producto"
+                        : "Completa ls datos para crear un nuevo producto"}
+                </p>
+            </div>
+
+            {/* ===================== FORM ===================== */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {/* Item Name */}
                 <Input
-                    id="name"
+                    label="Nombre del Producto"
                     type="text"
+                    placeholder="Ej: Chuleta de Cerdo, Chuleta de Pollo"
+                    helperText="Nombre visible en el menú"
                     {...register("name")}
-                    placeholder="Ej. Chuleta de Cerdo"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    error={errors.name?.message}
                 />
-                {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name?.message}</p>
-                )}
-            </div>
 
-            {/* Description */}
-            <div>
-                <label
-                    htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Descripción
-                </label>
-                <textarea
-                    id="description"
-                    {...register("description")}
-                    rows={3}
-                    placeholder="Descripción del producto"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-                {errors.description && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.description.message}
+                {/* Description */}
+                <div>
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">
+                        Descripción
+                    </label>
+                    <textarea
+                        {...register("description")}
+                        rows={3}
+                        placeholder="Descripción detallada del producto (opcional)"
+                        className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-white text-neutral-900 placeholder:text-neutral-400 placeholder:font-light transition-all resize-none"
+                    />
+                    {errors.description && (
+                        <p className="text-red-600 text-sm mt-2 font-light">
+                            {errors.description.message}
+                        </p>
+                    )}
+                    <p className="text-xs text-neutral-500 mt-1.5 font-light">
+                        Opcional: Ingredientes, preparación, etc.
                     </p>
-                )}
-            </div>
+                </div>
 
-            {/* Price */}
-            <div>
-                <label
-                    htmlFor="price"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Precio *
-                </label>
+                {/* Price */}
                 <Input
-                    id="price"
+                    label="Precio"
                     type="text"
+                    placeholder="12.500"
+                    helperText="Precio del producto"
                     {...register("price")}
-                    placeholder="12500"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    error={errors.price?.message}
                 />
-                {errors.price && (
-                    <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
-                )}
-            </div>
 
-            {/* Category */}
-            <div>
-                <label
-                    htmlFor="categoryId"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Categoría *
-                </label>
-                <select
-                    id="categoryId"
-                    {...register("categoryId", { valueAsNumber: true })}
-                    disabled={loadingCategories}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                >
-                    <option value="">Selecciona una categoría</option>
-                    {categories?.map((category) => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
-                        </option>
-                    ))}
-                </select>
-                {errors.categoryId && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.categoryId.message}
+                {/* Category selection */}
+                <div>
+                    <label className="block text-sm font-medium text-neutral-700 mb-2">
+                        Categoría
+                    </label>
+                    <select
+                        {...register("categoryId", { valueAsNumber: true })}
+                        disabled={loadingCategories}
+                        className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-white text-neutral-900 font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <option value="">Selecciona una categoría</option>
+                        {categories?.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.categoryId && (
+                        <p className="text-red-600 text-sm mt-2 font-light">
+                            {errors.categoryId.message}
+                        </p>
+                    )}
+                    <p className="text-red-600 text-sm mt-2 font-light">
+                        Categoría a la que pertenece este producto
                     </p>
-                )}
-            </div>
+                </div>
 
-            {/* Available */}
-            <div className="flex items-center gap-2">
-                <Input
-                    id="available"
-                    type="checkbox"
-                    {...register("isAvailable")}
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                />
-                <label htmlFor="available">Disponible</label>
-            </div>
+                {/* Image URL */}
+                <div>
+                    <label className="text-sm font-medium text-neutral-700 mb-2 flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4" />
+                        URL de la Imagen
+                    </label>
+                    <Input
+                        type="text"
+                        placeholder="https://ejemplo.com/pizza.jpg"
+                        helperText="Opcional: URL de la imagen del producto"
+                        {...register("imageUrl")}
+                        error={errors.imageUrl?.message}
+                    />
+                </div>
 
-            {/* Extra */}
-            <div className="flex items-center gap-2">
-                <Input
-                    id="extra"
-                    type="checkbox"
-                    {...register("isExtra")}
-                    className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-                />
-                <label htmlFor="extra">Extra</label>
-            </div>
+                {/* Toggles Section  */}
+                <div className="space-y-4 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                    <p className="text-sm font-medium text-neutral-700 mb-3">
+                        Opciones de Producto
+                    </p>
 
-            {/* Image */}
-            <div>
-                <label
-                    htmlFor="image"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    URL de la Imagen
-                </label>
-                <Input
-                    type="text"
-                    id="image"
-                    {...register("imageUrl")}
-                    placeholder="https://ejemplo.com/pizza.jpg"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-                {errors.imageUrl && (
-                    <p className="text-red-500 text-sm mt-1">{errors.imageUrl.message}</p>
-                )}
-            </div>
+                    {/* Available Toggle  */}
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                            type="checkbox"
+                            {...register("isAvailable")}
+                            className="w-5 h-5 text-primary-600 border-neutral-300 rounded focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
+                        />
+                        <div>
+                            <span>Disponible</span>
+                            <p>El producto está disponible para ordenar</p>
+                        </div>
+                    </label>
 
-            {/* Buttons */}
-            <div className="flex gap-2">
-                <Button size="sm" variant="primary" type="submit" disabled={isLoading}>
-                    {isLoading ? "Guardando" : item ? "Actualizar" : "Crear"}
-                </Button>
-                {onCancel && (
-                    <Button size="sm" variant="secondary" onClick={onCancel}>
-                        Cancelar
+                    {/* Extra Toggle  */}
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                        <input
+                            type="checkbox"
+                            {...register("isExtra")}
+                            className="w-5 h-5 text-primary-600 border-neutral-300 rounded focus:ring-2 focus:ring-primary-500/20 cursor-pointer"
+                        />
+                        <div className="flex-1">
+                            <span className="text-sm font-medium text-neutral-900 group-hover:text-primary-600 transition-colors">
+                                Extra
+                            </span>
+                            <p className="text-sm text-neutral-600 font-light">
+                                Marca este producto como si es extra
+                            </p>
+                        </div>
+                    </label>
+                </div>
+
+                {/* ================= ACTION BUTTONS ===================== */}
+                <div className="flex gap-3 pt-6">
+                    {/* Submit Button */}
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        disabled={isLoading}
+                        isLoading={isLoading}
+                        fullWidth
+                    >
+                        {!isLoading && <Check className="w-5 h-5 mr-2" />}
+                        {item ? "Actualizar Producto" : "Crear Producto"}
                     </Button>
-                )}
-            </div>
-        </form>
+
+                    {/* Cancel Button */}
+                    {onCancel && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="lg"
+                            onClick={onCancel}
+                            fullWidth
+                        >
+                            <X className="w-5 h-5 mr-2" /> Cancelar
+                        </Button>
+                    )}
+                </div>
+            </form>
+        </Card>
     );
 }
