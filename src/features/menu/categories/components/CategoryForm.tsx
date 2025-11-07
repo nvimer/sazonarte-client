@@ -1,29 +1,45 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@/components";
+import { Button, Card, Input } from "@/components";
 import type { MenuCategory } from "@/types";
 import {
     createCategorySchema,
     type CreateCategoryInput,
 } from "../schemas/categorySchemas";
 import { useCreateCategory, useUpdateCategory } from "../hooks";
+import { Check, X } from "lucide-react";
 
+// ========== TYPES ===========
 interface CategoryFormProps {
+    // if editing
     category?: MenuCategory;
     onSuccess?: () => void;
     onCancel?: () => void;
 }
 
+/**
+ * Category Form Component
+ *
+ * Form to create or edit a meny category
+ *
+ * Features /
+ * - React Hook Form with zod validation
+ * - Create or Edit mode
+ * - Name, description and order fields
+ * - Success/Error handling
+ */
 export function CategoryForm({
     category,
     onSuccess,
     onCancel,
 }: CategoryFormProps) {
+    // ============= HOOKS =============
     const { mutate: createCategory, isPending: isCreating } = useCreateCategory();
     const { mutate: updateCategory, isPending: isUpdating } = useUpdateCategory();
 
     const isLoading = isCreating || isUpdating;
 
+    // ============ FORM SETUP ==============
     const {
         register,
         handleSubmit,
@@ -31,6 +47,7 @@ export function CategoryForm({
         reset,
     } = useForm<CreateCategoryInput>({
         resolver: zodResolver(createCategorySchema),
+        // Default values based on mode
         defaultValues: category
             ? {
                 name: category.name,
@@ -44,6 +61,7 @@ export function CategoryForm({
             },
     });
 
+    // ============== FORM SUBMIT ===============
     const onSubmit = (data: CreateCategoryInput) => {
         if (category) {
             // Update existing category
@@ -51,7 +69,6 @@ export function CategoryForm({
                 { id: category.id, ...data },
                 {
                     onSuccess: () => {
-                        alert("¡Mesa Actualizada!");
                         reset();
                         onSuccess?.();
                     },
@@ -61,10 +78,9 @@ export function CategoryForm({
                 },
             );
         } else {
-            // Create Category
+            // Create new Category
             createCategory(data, {
                 onSuccess: () => {
-                    alert("¡Mesa Creada!");
                     reset();
                     onSuccess?.();
                 },
@@ -75,93 +91,98 @@ export function CategoryForm({
         }
     };
 
+    // ================= RENDER =================
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            {/* Category Name  */}
-            <div>
-                <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Nombre *
-                </label>
+        <Card variant="elevated" padding="xl">
+            {/* ============== FORM HEADER ============= */}
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
+                    {category ? "Editar Categoría" : "Nueva Categoría"}
+                </h2>
+                <p className="text-neutral-600 font-light">
+                    {category
+                        ? "Modifica los datos de la categoría"
+                        : "Completa los datos para crear una nueva categoría"}
+                </p>
+            </div>
+
+            {/* =============== FORM ============= */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Category Name  */}
                 <Input
                     id="name"
+                    label="Nombre de la Categoría"
                     type="text"
+                    placeholder="Ej. Bebidas, Entradas, Postres..."
+                    helperText="Nombre visible en el Menú"
                     {...register("name")}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Ej. Bebidas"
+                    error={errors.name?.message}
                 />
-                {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-                )}
-            </div>
 
-            {/* Description */}
-            <div>
-                <label
-                    htmlFor="description"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Descripción
-                </label>
-                <textarea
-                    id="description"
-                    {...register("description")}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Descripción de la categoría"
-                />
-                {errors.description && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.description.message}
+                {/* Description  */}
+                <div>
+                    <label
+                        htmlFor="description"
+                        className="block text-sm font-medium text-neutral-700 mb-2"
+                    >
+                        Descripción
+                    </label>
+                    <textarea
+                        id="description"
+                        {...register("description")}
+                        rows={3}
+                        placeholder="Breve descripción de la categoría (opcional)"
+                        className="w-full px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 bg-white text-neutral-900 placeholder:text-neutral-400 placeholder:font-light transition-all resize-none"
+                    />
+                    {errors.description && (
+                        <p className="text-red-600 text-sm mt-2 font-light">
+                            {errors.description.message}
+                        </p>
+                    )}
+                    <p className=" text-xs text-neutral-500 mt-1.5 font-light">
+                        Opcional: Agrega más contexto sobre esta categoría
                     </p>
-                )}
-            </div>
+                </div>
 
-            {/* Order */}
-            <div>
-                <label
-                    htmlFor="order"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                    Órden
-                </label>
+                {/* Order */}
                 <Input
-                    id="order"
+                    label="Orden de Visualización"
                     type="number"
+                    placeholder="0"
+                    helperText="Orden en que se mostrará (menor = primero)"
                     {...register("order", { valueAsNumber: true })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                    placeholder="Ej. 10"
+                    error={errors.order?.message}
                 />
-                {errors.order && (
-                    <p className="text-red-500 text-sm mt-1">{errors.order.message}</p>
-                )}
-            </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2">
-                <Button
-                    size="sm"
-                    type="submit"
-                    variant="primary"
-                    disabled={isLoading}
-                    fullWidth
-                >
-                    {isLoading ? "Guardando..." : category ? "Actualizar" : "Crear"}
-                </Button>
-                {onCancel && (
+                {/* =========== ACTION BUTTONS ============= */}
+                <div className="flex gap-3 pt-6">
                     <Button
-                        size="sm"
-                        type="button"
-                        variant="secondary"
-                        onClick={onCancel}
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        disabled={isLoading}
+                        isLoading={isLoading}
                         fullWidth
                     >
-                        Cancelar
+                        {!isLoading && <Check className="w-5 h-5 mr-2" />}
+                        {category ? "Actualizar Categoría" : "Crear Categoría"}
                     </Button>
-                )}
-            </div>
-        </form>
+
+                    {/* Cancel Button */}
+                    {onCancel && (
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="lg"
+                            onClick={onCancel}
+                            fullWidth
+                        >
+                            <X className="w-5 h-5 mr-2" />
+                            Cancelar
+                        </Button>
+                    )}
+                </div>
+            </form>
+        </Card>
     );
 }

@@ -6,8 +6,8 @@ export function useItems() {
     return useQuery({
         queryKey: queryKeys.menu.all,
         queryFn: async () => {
-            const result = await menuApi.getMenuItems();
-            return result.data.data;
+            const response = await menuApi.getMenuItems();
+            return response.data;
         },
         staleTime: 5 * 60 * 1000,
     });
