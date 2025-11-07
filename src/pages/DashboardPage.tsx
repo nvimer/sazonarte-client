@@ -155,7 +155,9 @@ export function DashboardPage() {
                 <MenuIcon className="w-5 h-5 text-blue-600" />
               </div>
               <div className="flex-1 text-left">
-                <div className="font-medium text-neutral-900">Nuevo Item</div>
+                <div className="font-medium text-neutral-900">
+                  Nuevo Producto
+                </div>
                 <div className="text-sm text-neutral-500 font-light">
                   Agregar al menú
                 </div>

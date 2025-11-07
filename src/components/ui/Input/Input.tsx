@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     // Error or normal state
     const stateStyles = error
       ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
-      : "border-neutral-200 focur:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
+      : "border-neutral-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
 
     const widthClass = fullWidth ? "w-full" : "";
 

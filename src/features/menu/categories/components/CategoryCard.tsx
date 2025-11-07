@@ -1,6 +1,8 @@
-import { Button } from "@/components";
+import { Button, Card } from "@/components";
 import type { MenuCategory } from "@/types";
+import { ArrowUpDown, Edit2, FolderOpen, Trash2 } from "lucide-react";
 
+// =========== TYPES ============
 interface CategoryCardProps {
     category: MenuCategory;
     onEdit: (category: MenuCategory) => void;
@@ -11,33 +13,82 @@ interface CategoryCardProps {
  * MenuCategory Card component
  *
  *  Displays a single category with actions
+ *
+ *  Features /
+ *  - Category name and description
+ *  - Order indicator
+ *  - Edit and delete actions
  */
 export function CategoryCard({
     category,
     onEdit,
     onDelete,
 }: CategoryCardProps) {
+    // =========== RENDER ============
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-            <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-semibold text-gray-800">{category.name}</h3>
+        <Card
+            variant="elevated"
+            padding="lg"
+            className="transition-all duration-300 hover:shadow-xl group"
+        >
+            {/* ============== HEADER ============ */}
+            <div className="flex items-start justify-between mb-4">
+                {/* Category Icon and Name */}
+                <div className="flex items-center gap-3 flex-1">
+                    <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center border-2 border-primary-100 group-hover:bg-primary-100 transition-colors">
+                        <FolderOpen className="w-6 h-6 text-primary-600" />
+                    </div>
+
+                    {/* Category name  */}
+                    <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-neutral-900 mb-1 truncate">
+                            {category.name}
+                        </h3>
+
+                        {/* Order badge */}
+                        <div className="flex items-center gap-1.5 text-neutral-600">
+                            <ArrowUpDown className="w-3.5 h-3.5" />
+                            <span className="text-xs font-light">
+                                Órden: {category.order}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {/* ========== DESCRIPTION =============== */}
             {category.description && (
-                <p className="text-gray-600 text-sm mb-4">{category.description}</p>
+                <div className="mb-6 p-3 bg-neutral-50 rounded-lg border border-neutral-100">
+                    <p className="text-sm text-neutral-700 font-light leading-relaxed">
+                        {category.description}
+                    </p>
+                </div>
             )}
-            <p className="text-gray-600 text-sm mb-4">{category.order}</p>
-            <div className="flex gap-2">
-                <Button variant="primary" size="sm" onClick={() => onEdit(category)}>
+
+            {/* =========== ACTIONS ========== */}
+            <div>
+                {/* Edit Button  */}
+                <Button
+                    variant="ghost"
+                    size="md"
+                    onClick={() => onEdit(category)}
+                    className="flex-1 group/btn"
+                >
+                    <Edit2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
                     Editar
                 </Button>
+
+                {/* Delete Button */}
                 <Button
-                    variant="danger"
-                    size="sm"
+                    variant="ghost"
+                    size="md"
                     onClick={() => onDelete(category.id)}
+                    className="flex-1 text-red-600 hover:bg-gray-50 hover:text-red-700 group/btn"
                 >
+                    <Trash2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
                     Eliminar
                 </Button>
             </div>
-        </div>
+        </Card>
     );
 }
