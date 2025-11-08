@@ -1,4 +1,4 @@
-import { Navbar } from "../sections";
+import { HeroSection, Navbar } from "../sections";
 
 /**
  * LandingPage Component
@@ -20,7 +20,9 @@ export function LandingPage() {
       <Navbar />
 
       {/* ============== MAIN CONTENT ================= */}
-      <main></main>
+      <main>
+        <HeroSection />
+      </main>
 
       {/* =========== FOOTER ===========  */}
     </div>
