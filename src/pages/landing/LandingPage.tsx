@@ -3,6 +3,7 @@ import {
   HeroSection,
   Navbar,
   StatsSection,
+  CTASection,
 } from "../sections";
 
 /**
@@ -34,6 +35,9 @@ export function LandingPage() {
 
         {/* Stats */}
         <StatsSection />
+
+        {/* CTA */}
+        <CTASection />
       </main>
 
       {/* =========== FOOTER ===========  */}
