@@ -4,6 +4,7 @@ import {
   Navbar,
   StatsSection,
   CTASection,
+  Footer,
 } from "../sections";
 
 /**
@@ -41,6 +42,7 @@ export function LandingPage() {
       </main>
 
       {/* =========== FOOTER ===========  */}
+      <Footer />
     </div>
   );
 }
