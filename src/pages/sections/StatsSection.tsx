@@ -42,7 +42,10 @@ export function StatsSection() {
 
   // ============= RENDER ===============
   return (
-    <section className="py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 relative overflow-hidden">
+    <section
+      id="benefits"
+      className="py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 relative overflow-hidden"
+    >
       {/* ============== BACKGROUND PATTERN ================= */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
