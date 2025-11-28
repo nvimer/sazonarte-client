@@ -8,6 +8,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Input } from "@/components";
 import { Check, X } from "lucide-react";
+import { toast } from "sonner";
 
 // ================ TYPES ==================
 interface TableFormProps {
@@ -67,10 +68,17 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                 { id: table.id, ...data },
                 {
                     onSuccess: () => {
+                        toast.success("Mesa actualizada", {
+                            description: `La mesa #${data.number} ha sido actualizada exitosamente`,
+                            icon: "✅",
+                        });
                         onSuccess?.();
                     },
                     onError: (error: any) => {
-                        alert(`Error: ${error.response?.message || error.message}`);
+                        toast.error("Error al actualizar mesa", {
+                            description: error.response?.data?.message || error.message,
+                            icon: "❌",
+                        });
                     },
                 },
             );
@@ -78,9 +86,17 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
             // Create new table
             createTable(data, {
                 onSuccess: () => {
+                    toast.success("Mesa creada", {
+                        description: `La mesa #${data.number} está disponible`,
+                        icon: "🎉",
+                    });
                     onSuccess?.();
                 },
                 onError: (error: any) => {
+                    toast.error("Error al crear mesa", {
+                        description: error.response?.data?.message || error.message,
+                        icon: "❌",
+                    });
                     alert(`Error: ${error.response?.message || error.message}`);
                 },
             });

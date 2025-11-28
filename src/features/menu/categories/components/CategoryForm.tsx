@@ -8,6 +8,7 @@ import {
 } from "../schemas/categorySchemas";
 import { useCreateCategory, useUpdateCategory } from "../hooks";
 import { Check, X } from "lucide-react";
+import { toast } from "sonner";
 
 // ========== TYPES ===========
 interface CategoryFormProps {
@@ -69,11 +70,18 @@ export function CategoryForm({
                 { id: category.id, ...data },
                 {
                     onSuccess: () => {
+                        toast.success("Categoría actualizada", {
+                            description: `"${data.name}" ha sido actualizada exitosamente`,
+                            icon: "✅",
+                        });
                         reset();
                         onSuccess?.();
                     },
                     onError: (error: any) => {
-                        alert(`Error: ${error.response?.message || error.message}`);
+                        toast.error("Error al actualizar categoría", {
+                            description: error.response?.data?.message || error.message,
+                            icon: "❌",
+                        });
                     },
                 },
             );
@@ -81,11 +89,18 @@ export function CategoryForm({
             // Create new Category
             createCategory(data, {
                 onSuccess: () => {
+                    toast.success("Categoría creada", {
+                        description: `"${data.name}" ha sido agregada al menú`,
+                        icon: "🎉",
+                    });
                     reset();
                     onSuccess?.();
                 },
                 onError: (error: any) => {
-                    alert(`Error: ${error.response?.message || error.message}`);
+                    toast.error("Error al crear categoría", {
+                        description: error.response?.data?.message || error.message,
+                        icon: "❌",
+                    });
                 },
             });
         }
