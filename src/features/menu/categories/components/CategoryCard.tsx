@@ -1,6 +1,8 @@
 import { Button, Card } from "@/components";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { MenuCategory } from "@/types";
 import { ArrowUpDown, Edit2, FolderOpen, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 // =========== TYPES ============
 interface CategoryCardProps {
@@ -24,71 +26,86 @@ export function CategoryCard({
     onEdit,
     onDelete,
 }: CategoryCardProps) {
+    // =========== STATE ============
+    const [isDeleteDialogOpen, setIsDialogOpen] = useState(false);
+
     // =========== RENDER ============
     return (
-        <Card
-            variant="elevated"
-            padding="lg"
-            className="transition-all duration-300 hover:shadow-xl group"
-        >
-            {/* ============== HEADER ============ */}
-            <div className="flex items-start justify-between mb-4">
-                {/* Category Icon and Name */}
-                <div className="flex items-center gap-3 flex-1">
-                    <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center border-2 border-primary-100 group-hover:bg-primary-100 transition-colors">
-                        <FolderOpen className="w-6 h-6 text-primary-600" />
-                    </div>
+        <>
+            <Card
+                variant="elevated"
+                padding="lg"
+                className="transition-all duration-300 hover:shadow-xl group"
+            >
+                {/* ============== HEADER ============ */}
+                <div className="flex items-start justify-between mb-4">
+                    {/* Category Icon and Name */}
+                    <div className="flex items-center gap-3 flex-1">
+                        <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center border-2 border-primary-100 group-hover:bg-primary-100 transition-colors">
+                            <FolderOpen className="w-6 h-6 text-primary-600" />
+                        </div>
 
-                    {/* Category name  */}
-                    <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-neutral-900 mb-1 truncate">
-                            {category.name}
-                        </h3>
+                        {/* Category name  */}
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-semibold text-neutral-900 mb-1 truncate">
+                                {category.name}
+                            </h3>
 
-                        {/* Order badge */}
-                        <div className="flex items-center gap-1.5 text-neutral-600">
-                            <ArrowUpDown className="w-3.5 h-3.5" />
-                            <span className="text-xs font-light">
-                                Órden: {category.order}
-                            </span>
+                            {/* Order badge */}
+                            <div className="flex items-center gap-1.5 text-neutral-600">
+                                <ArrowUpDown className="w-3.5 h-3.5" />
+                                <span className="text-xs font-light">
+                                    Órden: {category.order}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* ========== DESCRIPTION =============== */}
-            {category.description && (
-                <div className="mb-6 p-3 bg-neutral-50 rounded-lg border border-neutral-100">
-                    <p className="text-sm text-neutral-700 font-light leading-relaxed">
-                        {category.description}
-                    </p>
+                {/* ========== DESCRIPTION =============== */}
+                {category.description && (
+                    <div className="mb-6 p-3 bg-neutral-50 rounded-lg border border-neutral-100">
+                        <p className="text-sm text-neutral-700 font-light leading-relaxed">
+                            {category.description}
+                        </p>
+                    </div>
+                )}
+
+                {/* =========== ACTIONS ========== */}
+                <div>
+                    {/* Edit Button  */}
+                    <Button
+                        variant="ghost"
+                        size="md"
+                        onClick={() => onEdit(category)}
+                        className="flex-1 group/btn"
+                    >
+                        <Edit2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
+                        Editar
+                    </Button>
+
+                    {/* Delete Button */}
+                    <Button
+                        variant="ghost"
+                        size="md"
+                        onClick={() => setIsDialogOpen(true)}
+                        className="flex-1 text-red-600 hover:bg-gray-50 hover:text-red-700 group/btn"
+                    >
+                        <Trash2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
+                        Eliminar
+                    </Button>
                 </div>
-            )}
-
-            {/* =========== ACTIONS ========== */}
-            <div>
-                {/* Edit Button  */}
-                <Button
-                    variant="ghost"
-                    size="md"
-                    onClick={() => onEdit(category)}
-                    className="flex-1 group/btn"
-                >
-                    <Edit2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
-                    Editar
-                </Button>
-
-                {/* Delete Button */}
-                <Button
-                    variant="ghost"
-                    size="md"
-                    onClick={() => onDelete(category.id)}
-                    className="flex-1 text-red-600 hover:bg-gray-50 hover:text-red-700 group/btn"
-                >
-                    <Trash2 className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform" />
-                    Eliminar
-                </Button>
-            </div>
-        </Card>
+            </Card>
+            <ConfirmDialog
+                isOpen={isDeleteDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                onConfirm={() => onDelete(category.id)}
+                title="Eliminar Categoría"
+                description={`¿Estás seguro de que deseas eliminar la categoría "${category.name}"? Esta acción no se puede deshacer.`}
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+                variant="danger"
+            />
+        </>
     );
 }

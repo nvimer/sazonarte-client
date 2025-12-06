@@ -1,27 +1,39 @@
-import { Bell, Search } from "lucide-react";
+import { Button } from "@/components/ui";
+import { useAuth } from "@/hooks";
+import { LogOut, User } from "lucide-react";
 
 export function TopBar() {
+    const { user, logout } = useAuth();
+
     return (
-        <div className="h-16 bg-white border-b border-neutral-100 flex items-center justify-between px-10">
-            {/* Search */}
-            <div className="flex-1 max-w-xl">
-                <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
-                    <input
-                        type="text"
-                        placeholder="Buscar Mesas, Órdenes, Menú..."
-                        className="w-full pl-12 pr-4 py-2.5 bg-neutral-50 border border-neutral-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-e-primary-500 focus:bg-white transition-all text-[15px] placeholder:text-neutral-400 placeholder:font-light"
-                    />
-                </div>
+        <header className="h-20 bg-white border-b border-s-sage-border-subtle flex items-center justify-between px-8">
+            {/* Page title or breadcrumb */}
+            <div>
+                <h1 className="text-2xl font-bold text-carbon-900">Dashboard</h1>
             </div>
 
-            {/* Right Section  */}
+            {/* User section */}
             <div className="flex items-center gap-4">
-                <button className="relative p-2.5 text-neutral-600 hover:bg-neutral-50 rounded-xl transition-colors ">
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-primary-500 rounded-full"></span>
-                </button>
+                {/* User info  */}
+                <div className="flex items-center gap-3 px-4 py-2 bg-sage-50 rounded-xl">
+                    <div className="w-8 h-8 bg-sage-green-100 rounded-full flex items-center justify-center">
+                        <User className="w-4 h-4 text-sage-green-600" />
+                    </div>
+
+                    <div className="text-sm">
+                        <p className="font-medium text-carbon-900">
+                            {user?.name || "Usuario"}
+                        </p>
+                        <p className="text-carbon-500">{user?.email}</p>
+                    </div>
+                </div>
+
+                {/* Logout Button  */}
+                <Button variant="outline" size="sm" onClick={logout} className="gap-2">
+                    <LogOut className="w-4 h-4" />
+                    Salir
+                </Button>
             </div>
-        </div>
+        </header>
     );
 }

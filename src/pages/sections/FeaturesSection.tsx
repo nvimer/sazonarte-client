@@ -1,152 +1,166 @@
-import { Card } from "@/components";
 import { motion } from "framer-motion";
-import {
-  BarChart3,
-  ClipboardList,
-  Clock,
-  Menu,
-  Table2,
-  Users,
-} from "lucide-react";
+import { BarChart3, Clock, LayoutGrid, Shield, Users, Zap } from "lucide-react";
+import { Badge } from "@/components/ui/Badge";
+import { Button, Card } from "@/components";
 
 /**
  * FeaturesSection Component
  *
  * Showcase main features of the system
- *
- * Features
- * - 6 feature cards with icons
- * - Grid layout responsive
- * - Staggeres animations
  */
 export function FeaturesSection() {
   // ================= FEATURES DATA ===================
   const features = [
     {
-      icon: Table2,
+      icon: LayoutGrid,
       title: "Gestión de Mesas",
       description:
-        "Controla el estado de tus mesas en tiempo real. Disponible, ocupada o en limpieza",
-      color: "primary",
-    },
-    {
-      icon: Menu,
-      title: "Menú Digital",
-      description:
-        "Actualiza el menú al instante. Categorías, productos, precios y disponibilidad",
-      color: "blue",
-    },
-    {
-      icon: ClipboardList,
-      title: "Órdenes Centralizadas",
-      description:
-        "Gestiona todas las órdenes desde un solo lugar. Sin confusiones, sin errores.",
-      color: "green",
-    },
-    {
-      icon: BarChart3,
-      title: "Reportes y Estadísticas",
-      description:
-        "Analiza el rendimiento de tu restaurante con dashboards y gráficas detalladas.",
-      color: "purple",
-    },
-    {
-      icon: Users,
-      title: "Gestión de Personal",
-      description:
-        "Controla roles, permisos y accesos de tu equipo de forma segura.",
-      color: "orange",
+        "Visualiza y administra todas tus mesas en tiempo real. Asigna pedidos, controla ocupación y optimiza tiempos.",
+      color: "from-sage-green-200 to-sage-green-300",
+      delay: 0.1,
     },
     {
       icon: Clock,
-      title: "Operación en Tiempo Real",
+      title: "Menú Digital",
       description:
-        "Sincronización instantánea entre todos los dispositivos de tu restaurante.",
-      color: "red",
+        "Sistema sincronizado entre cocina, meseros y caja. Nunca pierdas un pedido, reduce errores y acelera el servicio.",
+      color: "from-sage-green-300 to-sage-green-400",
+      delay: 0.2,
+    },
+    {
+      icon: BarChart3,
+      title: "Reportes Inteligentes",
+      description:
+        "Analiza ventas, productos populares y tendencias. Toma decisiones basadas en datos reales y claros.",
+      color: "from-sage-green-200 to-sage-green-400",
+      delay: 0.3,
+    },
+    {
+      icon: Shield,
+      title: "Seguridad Total",
+      description:
+        "Tus datos protegidos con encriptación a nivel bancario. Control de accesos por roles y respaldos automáticos.",
+      color: "from-sage-green-300 to-sage-green-500",
+      delay: 0.4,
+    },
+    {
+      icon: Zap,
+      title: "Rápido y Ligero",
+      description:
+        "Diseñado para funcionar incluso con interet lento. Sin lag, sin esperas, sin complicaciones.",
+      color: "from-sage-green-200 to-sage-green-300",
+      delay: 0.5,
+    },
+    {
+      icon: Users,
+      title: "Multi-Usuario",
+      description:
+        "Acceso simultáneo para todo tu equipo. Meseros, cocina y administración trabajando en perfecta sintonía.",
+      color: "from-sage-green-300 to-sage-green-400",
+      delay: 0.5,
     },
   ];
 
-  // ================ COLOR MAPPING ===================
-  const colorClasses = {
-    primary: "bg-primary-100 text-primary-600",
-    blue: "bg-blue-100 text-blue-600",
-    green: "bg-green-100 text-green-600",
-    purple: "bg-purple-100 text-purple-600",
-    orange: "bg-orange-100 text-orange-600",
-    red: "bg-red-100 text-red-600",
-  };
-
   // ============== RENDER ===============
   return (
-    <section id="features" className=" py-24 bg-white">
+    <section id="features" className="section-padding bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* =========== SECTION HEADER ===========  */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          {/* Section Badge  */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full font-medium mb-6">
-            Características
-          </div>
+        {/* Header */}
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex mb-6"
+          >
+            <Badge variant="success" size="md" className="glass-sage-light">
+              <span className=" w-2 h-2 bg-sage-green-400 rounded-full animate-pulse mr-2"></span>
+              Características Poderosas
+            </Badge>
+          </motion.div>
 
-          {/* Section Title  */}
-          <h2 className="text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
-            Todo lo que Necesitas en{" "}
-            <span className="bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-              un Solo Lugar
-            </span>
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-carbon-900 mb-6 tracking-tight leading-tight"
+          >
+            Todo lo que {""}
+            <span className="text-gradient-sage">necesitas</span>
+          </motion.h2>
+        </div>
 
-          {/* Section Description */}
-          <p className="text-lg text-neutral-600 max-w-2xl mx-auto font-light">
-            Sazonarte integra todas las herramientas esenciales para gestionar
-            tu restaurante de manera efidciente y profesional.
-          </p>
-        </motion.div>
-
-        {/* ========== FEATURES GRID ============ */}
+        {/* Features Grid using Card component */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon;
+
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: feature.delay }}
+                whileHover={{ y: -8 }}
               >
                 <Card
-                  variant="elevated"
-                  padding="xl"
-                  className="h-full hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                  variant="bordered"
+                  padding="lg"
+                  hover
+                  className="h-full group relative overflow-hidden"
                 >
-                  {/* Feature Icon  */}
-                  <div
-                    className={`w-14 h-14 ${colorClasses[feature.color as keyof typeof colorClasses]
-                      } rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-7 h-7" />
+                  {/* Icon Container */}
+                  <div className="relative mb-6">
+                    <div
+                      className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.color} group-hover:animate-glow-pulse transition-all duration-300`}
+                    >
+                      <Icon className="w-7 h-7 text-white" />
+                    </div>
+
+                    {/* Decorative Element */}
+                    <div className="absolute -top-2 -right-2 w-20 h-20 bg-sage-green-100 rounded-full blur-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
                   </div>
 
-                  {/* Feature Title  */}
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-3">
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-carbon-900 mb-4 group-hover:text-sage-green-600 transition-colors duration-300">
                     {feature.title}
                   </h3>
 
-                  {/* Feature Description  */}
-                  <p className="text-neutral-600 font-light leading-relaxed">
+                  {/* Description */}
+                  <p className="text-carbon-700 leading-relaxed font-light">
                     {feature.description}
                   </p>
+
+                  {/* Hover Accent Line */}
+                  <div className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-sage-green-300 to-sage-green-500 group-hover:w-full transition-all duration-500 rounded-b-3xl"></div>
                 </Card>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Bottom CTA using Button component */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-14 text-center"
+        >
+          <p className="text-lg text-carbon-700 mb-6 font-light">
+            ¿Quieres ver cómo funciona en tu restaurante?
+          </p>
+          <Button
+            variant="primary"
+            size="lg"
+            className="glass-sage-light hover:-translate-y-1"
+          >
+            Solicitar Demo Personalizada
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

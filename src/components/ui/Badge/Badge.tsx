@@ -1,44 +1,47 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface BadgeProps {
+interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
     children: ReactNode;
-    variant?: "primary" | "success" | "warning" | "error" | "info" | "neutral";
-    size?: "sm" | "md";
+    variant?: "default" | "success" | "warning" | "error" | "info";
+    size?: "sm" | "md" | "lg";
     className?: string;
 }
 
 export function Badge({
     children,
-    variant = "primary",
+    variant = "default",
     size = "md",
     className = "",
+    ...props
 }: BadgeProps) {
+    // Base Badge style
     const baseStyles =
         "inline-flex items-center font-normal tracking-wide rounded-full border";
 
-    const variants = {
-        primary: "bg-primary-50 text-primary-700 border-primary-100",
-        success: "bg-green-50 text-green-700 border-green-100",
-        warning: "bg-amber-50 text-amber-700 border-amber-100",
-        error: "bg-red-50 text-red-700 border-red-100",
-        info: "bg-blue-50 text-blue-700 border-blue-100",
-        neutral: "bg-neutral-50 text-neutral-700 border-neutral-100",
+    // Variant styles
+    const varianStyles = {
+        default: "bg-sage-50 text-carbon-700 border border-sage-border-subtle",
+        success:
+            "bg-sage-green-50 text-sage-green-700 border border-sage-green-200",
+        warning: "bg-amber-50 text-yellow-700 border border-yellow-200",
+        error: "bg-red-50 text-red-700 border border-red-200",
+        info: "bg-blue-50 text-blue-700 border-blue-200",
     };
 
-    const sizes = {
+    const sizeStyles = {
         sm: "px-2 py-0.5 text-xs",
         md: "px-3 py-1 text-sm",
+        lg: "px-4 py-1.5 text-base",
     };
 
+    // Combine all styles
+    const badgeStyles =
+        `${baseStyles} ${varianStyles[variant]} ${sizeStyles[size]} ${className}`
+            .trim()
+            .replace(/\s+/g, " ");
+
     return (
-        <span
-            className={`
-                ${baseStyles} 
-                ${variants[variant]} 
-                ${sizes[size]} 
-                ${className}
-            `}
-        >
+        <span className={badgeStyles} {...props}>
             {children}
         </span>
     );

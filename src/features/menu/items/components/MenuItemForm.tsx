@@ -7,6 +7,7 @@ import { createItemSchema } from "../schemas/itemsSchemas";
 import { Button, Card, Input } from "@/components";
 import { useCategories } from "../../categories/hooks";
 import { Check, ImageIcon, X } from "lucide-react";
+import { toast } from "sonner";
 
 // ===== TYPES ======
 interface MenuItemFormProps {
@@ -70,10 +71,17 @@ export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
                 { id: item.id, ...data },
                 {
                     onSuccess: () => {
+                        toast.success("Producto actualizado", {
+                            description: `"${data.name}" ha sido actualizado exitosamente`,
+                            icon: "✅",
+                        });
                         onSuccess?.();
                     },
                     onError: (error: any) => {
-                        alert(`Error: ${error.response?.messagge || error.message}`);
+                        toast.error("Error al actualizar producto", {
+                            description: error.response?.data?.message || error.message,
+                            icon: "❌",
+                        });
                     },
                 },
             );
@@ -81,10 +89,17 @@ export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
             // Create new item
             createMenuItem(data, {
                 onSuccess: () => {
+                    toast.success("Producto creado", {
+                        description: `"${data.name}" ha sido agregado al menú`,
+                        icon: "🎉",
+                    });
                     onSuccess?.();
                 },
                 onError: (error: any) => {
-                    alert(`Error ${error.response?.data?.message || error.message}`);
+                    toast.error("Error al crear producto", {
+                        description: error.response?.data?.message || error.message,
+                        icon: "❌",
+                    });
                 },
             });
         }

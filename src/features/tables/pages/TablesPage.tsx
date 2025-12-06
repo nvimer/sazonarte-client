@@ -6,6 +6,8 @@ import { TableCard, TableForm } from "../components";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { Filter, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 /**
  * TablesPage Component
@@ -60,12 +62,21 @@ export function TablesPage() {
     if (isLoading) {
         return (
             <DashboardLayout>
-                <div className="flex items-center justify-center min-h-screen">
-                    <div className="text-center">
-                        {/* Loading spinner */}
-                        <div className="animate-spin rounded-full h-12 w-12 border-2 border-primary-200 border-t-primary-600 mx-auto mb-4"></div>
-                        <p className="text-gray-600">Cargando mesas...</p>
-                    </div>
+                {/* =========== PAGE HEADER SKELETON ============== */}
+                <div className="mb-12">
+                    {/* Title skeleton  */}
+                    <Skeleton className="w-64 h-10 mb-3" />
+                    <Skeleton className="w-96 h-6" />
+                </div>
+
+                <Skeleton className="w-full h-16 mb-8" />
+
+                <div className="w-full h-16 mb-8">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="space-y-4">
+                            <Skeleton className="w-full h-48" />
+                        </div>
+                    ))}
                 </div>
             </DashboardLayout>
         );
@@ -205,30 +216,31 @@ export function TablesPage() {
 
             {/* ============ TABLES GRID ========= */}
             {filteredTables && filteredTables.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredTables.map((table) => (
                         <TableCard key={table.id} table={table} onEdit={handleEdit} />
                     ))}
                 </div>
             ) : (
-                <Card variant="elevated" padding="xl" className="text-center">
-                    <div>
-                        <div>
-                            <Filter />
-                        </div>
-                        <h3>No hay mesas</h3>
-                        <p className="text-gray-600 text-lg">
-                            {statusFilter === "ALL"
-                                ? "No se encontraron mesas. ¡Crea tu primera mesa!"
-                                : "No hay mesas con este estado"}
-                        </p>
-                        {statusFilter === "ALL" && (
-                            <Button variant="primary" onClick={() => setShowForm(true)}>
-                                <Plus className="w-5 h-5 mr-2" /> Crear Primera Mesa
-                            </Button>
-                        )}
-                    </div>
-                </Card>
+                <EmptyState
+                    icon={Filter}
+                    title={
+                        statusFilter === "ALL"
+                            ? "No hay mesas"
+                            : "No hay mesas con este estado"
+                    }
+                    description={
+                        statusFilter === "ALL"
+                            ? "Crea tu primera mesa para comenzar a gestionar tu restaurante"
+                            : "Cambia el filtro para ver otras mesas"
+                    }
+                    actionLabel={
+                        statusFilter === "ALL" ? "Crear Primera Mesa" : undefined
+                    }
+                    onAction={
+                        statusFilter === "ALL" ? () => setShowForm(true) : undefined
+                    }
+                />
             )}
         </DashboardLayout>
     );
