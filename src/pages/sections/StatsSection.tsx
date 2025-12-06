@@ -1,135 +1,174 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Card } from "@/components";
+import { motion, useInView } from "framer-motion";
+import { Star, Store, TrendingUp, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+// Counter animation hook
+function useCountUp(
+  end: number,
+  duration: number = 2000,
+  enabled: boolean = false,
+) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    let startTime: number | null = null;
+    const startCount = 0;
+
+    const animate = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+
+      setCount(Math.floor(progress * (end - startCount) + startCount));
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [end, duration, enabled]);
+
+  return count;
+}
 
 /**
  * StatsSection Component
  *
  * Display impressive statistics with animated numbers.
- *
- * Features /
- * - Animate counting numbers
- * - Responsive grid
- * - Grid background
  */
 export function StatsSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   // =============== STATS DATA ==================
   const stats = [
     {
-      number: 500,
+      icon: Store,
+      value: 500,
       suffix: "+",
       label: "Restaurante Activos",
-      description: "Confían en Sazonarte",
+      description: "Confían en Plates",
+      color: "from-sage-green-200 to-sage-green-300",
     },
     {
-      number: 50,
-      suffix: "K+",
-      label: "Órdenes Procesadas",
-      description: "Cada mes",
+      icon: Users,
+      value: 12000,
+      suffix: "+",
+      label: "Usuarios Diarios",
+      description: "Gestionando pedidos",
+      color: "from-sage-green-300 to-sage-green-400",
     },
     {
-      number: 99,
+      icon: TrendingUp,
+      value: 98,
       suffix: "%",
-      label: "Uptime",
-      description: "Disponibilidad garantizada",
+      label: "Satisfacción",
+      description: "Rating promedio",
+      color: "from-sage-green-200 to-sage-green-300",
     },
     {
-      number: 24,
-      suffix: "/7",
-      label: "Soporte",
-      description: "Siempre disponible",
+      icon: Star,
+      value: 35,
+      suffix: "%",
+      label: "Más Eficiencia",
+      description: "En promedio",
+      color: "from-sage-green-200 to-sage-green-300",
     },
   ];
 
   // ============= RENDER ===============
   return (
     <section
-      id="benefits"
-      className="py-24 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 relative overflow-hidden"
+      ref={ref}
+      className="section-padding bg-sage-50 relative overflow-hidden"
     >
-      {/* ============== BACKGROUND PATTERN ================= */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+      {/* Background Decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -w-[800px] h-[800px] bg-sage-green-100 rounded-full blur-3xl opacity-30"></div>
       </div>
 
-      {/* ========= CONTENT ======= */}
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        {/* =========== SECTION HEADER =========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-            Números que hablan por sí solos
-          </h2>
-          <p className="text-lg text-primary-100 max-w-2xl mx-auto font-light">
-            Miles de restaurantes ya están transformando su gestión con
-            Sazonarte
-          </p>
-        </motion.div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-carbon-900 mb-4 tracking-tight"
+          >
+            Resultados que {""}
+            <span className="text-gradient-sage">hablan</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-lg text-carbon-700 font-light"
+          >
+            Miles de restaurantes ya transforman su gestión
+          </motion.p>
+        </div>
 
-        {/* ============= STATS GRID ================ */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="text-center"
-            >
-              {/* Animated Number  */}
-              <div className="text-5xl lg:text-6xl font-bold text-white mb-2">
-                <AnimatedNumber value={stat.number} />
-                {stat.suffix}
-              </div>
+        {/* Stat Grid using Card component */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            const count = useCountUp(stat.value, 2000, isInView);
 
-              {/* Stat Label */}
-              <div className="text-xl font-semibold text-white mb-2">
-                {stat.label}
-              </div>
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                <Card
+                  variant="elevated"
+                  padding="lg"
+                  hover
+                  className="h-full group"
+                >
+                  {/* Icon */}
+                  <div
+                    className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${stat.color} mb-6 group-hover:animate-glow-pulse transition-all`}
+                  >
+                    <Icon className="w-6 h-6 text-white" strokeWidth={2.5} />
+                  </div>
 
-              {/* Stat Description */}
-              <div className="text-primary-100 font-light">
-                {stat.description}
-              </div>
-            </motion.div>
-          ))}
+                  {/* Number  */}
+                  <div className="mb-3">
+                    <span className="text-5xl md:text-6xl font-black text-carbon-900 tracking-tight">
+                      {count.toLocaleString()}
+                    </span>
+                    <span className="text-4xl md:text-5xl font-black text-sage-green-500 ml-1">
+                      {stat.suffix}
+                    </span>
+                  </div>
+
+                  {/* Label */}
+                  <h3 className="text-lg font-bold text-carbon-900 mb-2">
+                    {stat.label}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="tsm text-carbon-500 font-light">
+                    {stat.description}
+                  </p>
+
+                  {/* Hover Glow Effect */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-sage opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-}
-
-/**
- * AnimatedNumber Component
- *
- * Animated a number from 0 to target value
- */
-function AnimatedNumber({ value }: { value: number }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    const end = value;
-    const duration = 2000;
-    const increment = end / (duration / 16);
-
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 16);
-
-    return () => clearInterval(timer);
-  }, [value]);
-  return <span>{count}</span>;
 }
