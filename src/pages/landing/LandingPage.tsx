@@ -5,6 +5,7 @@ import {
   StatsSection,
   CTASection,
   Footer,
+  BenefitsSection,
 } from "../sections";
 
 /**
@@ -17,6 +18,7 @@ import {
  * - Hero Section
  * - Features Section
  * - Stats Section
+ * - Benefits Section
  * - CTA Section
  * - Footer
  */
@@ -36,6 +38,9 @@ export function LandingPage() {
 
         {/* Stats */}
         <StatsSection />
+
+        {/* Benefits */}
+        <BenefitsSection />
 
         {/* CTA */}
         <CTASection />

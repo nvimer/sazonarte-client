@@ -16,13 +16,21 @@ const App = () => {
       <Routes>
         {/* =============== PUBLIC ROUTES =============== */}
         {/* Landing Page */}
-        <Route path="/" element={<LandingPage />} />
-
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />
+          }
+        />
         {/* Public Route: Login */}
         <Route
           path="/login"
           element={
-            isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <LoginPage />
+            )
           }
         />
 
@@ -59,8 +67,8 @@ const App = () => {
 
         {/* Temporary test page*/}
         <Route path="/test-design" element={<TestDesignPage />} />
-        {/* Fallback: Redirect to home or login*/}
 
+        {/* Fallback: Redirect to home or login*/}
         <Route
           path="*"
           element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
