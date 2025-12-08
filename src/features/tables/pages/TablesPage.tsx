@@ -4,7 +4,7 @@ import { TableStatus, type Table } from "@/types";
 import { Button, Card } from "@/components";
 import { TableCard, TableForm } from "../components";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
-import { Filter, Plus } from "lucide-react";
+import { Filter, Plus, Table as TableIcon } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -12,13 +12,6 @@ import { EmptyState } from "@/components/ui/EmptyState";
 /**
  * TablesPage Component
  * Main page for table management (CRUD operations)
- *
- * Features /
- * - List all tables
- * - Filter by status
- * - Create new table
- * - Edit existng table
- * - Delete table
  */
 export function TablesPage() {
     // ============= STATE ===============
@@ -39,10 +32,11 @@ export function TablesPage() {
         all: tables?.length || 0,
         available:
             tables?.filter((t) => t.status === TableStatus.AVAILABLE).length || 0,
-        occuppied:
+        occupied:
             tables?.filter((t) => t.status === TableStatus.OCCUPIED).length || 0,
         cleaning:
-            tables?.filter((t) => t.status === TableStatus.NEEDS_CLEANING) || 0,
+            tables?.filter((t) => t.status === TableStatus.NEEDS_CLEANING).length ||
+            0,
     };
 
     // ================= EVENT HANDLERS =====================
@@ -65,17 +59,15 @@ export function TablesPage() {
                 {/* =========== PAGE HEADER SKELETON ============== */}
                 <div className="mb-12">
                     {/* Title skeleton  */}
-                    <Skeleton className="w-64 h-10 mb-3" />
-                    <Skeleton className="w-96 h-6" />
+                    <Skeleton className="w-64 h-10 mb-3 bg-sage-100" />
+                    <Skeleton className="w-96 h-6 bg-sage-100" />
                 </div>
 
-                <Skeleton className="w-full h-16 mb-8" />
+                <Skeleton className="w-full h-16 mb-8 bg-sage-100" />
 
-                <div className="w-full h-16 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="space-y-4">
-                            <Skeleton className="w-full h-48" />
-                        </div>
+                        <Skeleton key={i} className="w-full h-48" />
                     ))}
                 </div>
             </DashboardLayout>
@@ -87,7 +79,7 @@ export function TablesPage() {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center min-h-[60vh]">
-                    <Card variant="elevated" padding="xl" className="max-w-md">
+                    <Card variant="elevated" padding="lg" className="max-w-md">
                         <div className=" text-center">
                             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span className="text-3xl">⚠️</span>
@@ -95,9 +87,7 @@ export function TablesPage() {
                             <h2 className="text-xl font-semibold text-red-600 mb-2">
                                 Error al cargar mesas
                             </h2>
-                            <p className="text-neutral-600 mb-6 font-light">
-                                {error.message}
-                            </p>
+                            <p className="text-carbon-600 mb-6 font-light">{error.message}</p>
                             <Button
                                 variant="primary"
                                 onClick={() => window.location.reload()}
@@ -118,7 +108,7 @@ export function TablesPage() {
             {/* ======== PAGE HEADER ======= */}
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-4xl font-semibold text-neutral-900">
+                    <h1 className="text-4xl font-semibold text-carbon-900 tracking-tight">
                         Gestión de Mesas
                     </h1>
                     <p className="text-[15px] text-neutral-600 font-light">
@@ -160,7 +150,7 @@ export function TablesPage() {
             <Card variant="elevated" padding="lg" className="mb-8">
                 <div className="flex items-center gap-6">
                     {/* Filter Icon and Label */}
-                    <div className="flex items-center gap-2 text-neutral-700 font-medium">
+                    <div className="flex items-center gap-2 text-carbon-700 font-medium">
                         <Filter className="w-5 h-5" />
                         <span>Filtrar:</span>
                     </div>
@@ -170,10 +160,10 @@ export function TablesPage() {
                         {/* All Tables  */}
                         <button
                             onClick={() => setStatusFilter("ALL")}
-                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === "ALL" ? "bg-neutral-400 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === "ALL" ? "bg-carbon-900 text-white shadow-soft-md" : "bg-sage-50 text-carbon-600 hover:bg-sage-100"}`}
                         >
                             Todas{" "}
-                            <Badge size="sm" variant="neutral" className="ml-2">
+                            <Badge size="sm" variant="default" className="ml-2">
                                 {counts.all}
                             </Badge>
                         </button>
@@ -181,33 +171,37 @@ export function TablesPage() {
                         {/* Available Tables */}
                         <button
                             onClick={() => setStatusFilter(TableStatus.AVAILABLE)}
-                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.AVAILABLE ? "bg-green-500 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.AVAILABLE ? "bg-sage-green-500 text-white shadow-soft-md" : "bg-sage-50 text-carbon-600 hover:bg-sage-100"}`}
                         >
                             Disponibles{" "}
-                            <Badge size="sm" variant="success" className="ml-2">
+                            <Badge
+                                size="sm"
+                                variant="success"
+                                className="ml-2 text-sage-green-600"
+                            >
                                 {counts.available}
                             </Badge>
                         </button>
 
-                        {/* Occuppied Tables */}
+                        {/* occupied Tables */}
                         <button
                             onClick={() => setStatusFilter(TableStatus.OCCUPIED)}
-                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.OCCUPIED ? "bg-red-500 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.OCCUPIED ? "bg-red-500 text-white shadow-soft-md" : "bg-sage-50 text-carbon-600 hover:bg-sage-100"}`}
                         >
                             Ocupadas{" "}
                             <Badge size="sm" variant="error" className="ml-2">
-                                {counts.occuppied}
+                                {counts.occupied}
                             </Badge>
                         </button>
 
                         {/* Cleaning Tables */}
                         <button
                             onClick={() => setStatusFilter(TableStatus.NEEDS_CLEANING)}
-                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.NEEDS_CLEANING ? "bg-yellow-500 text-white shadow-smooth" : "bg-neutral-50 text-neutral-600 hover:bg-neutral-100"}`}
+                            className={`px-4 py-2 rounded-xl transition-all font-medium text-sm ${statusFilter === TableStatus.NEEDS_CLEANING ? "bg-yellow-500 text-white shadow-smooth" : "bg-sage-50 text-carbon-600 hover:bg-neutral-100"}`}
                         >
                             Limpieza{" "}
                             <Badge size="sm" variant="warning" className="ml-2">
-                                {counts.occuppied}
+                                {counts.cleaning}
                             </Badge>
                         </button>
                     </div>
@@ -223,7 +217,7 @@ export function TablesPage() {
                 </div>
             ) : (
                 <EmptyState
-                    icon={Filter}
+                    icon={TableIcon}
                     title={
                         statusFilter === "ALL"
                             ? "No hay mesas"
