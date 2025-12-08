@@ -1,166 +1,264 @@
-import { Button } from "@/components";
-import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Play } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles, TrendingUp, Users } from "lucide-react";
+import { Button } from "@/components";
+import { Badge } from "@/components/ui/Badge";
 
 /**
  * HeroSection Component
  *
  * Main hero section with headline, description, and CTA
- *
- * Features /
- * - Large headline with gradient
- * - Two CTA buttons
- * - Feature bullets
- * - Animated entrance
  */
 export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-neutral-50 pt-20"
+      className="relative min-h-screen flex items-center justify-center bg-sage-green-50 overflow-hidden pt-20"
     >
-      {/* className="relative max-h-screen flex items-center" */}
-
       {/* ============== BACKGROUND DECORATION ============= */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient Blob 1  */}
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-primary-200/30 rounded-full blur-3xl"></div>
-        {/* Gradient Blob 2 */}
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-primary-300/2 rounded-full blur-3xl"></div>
+        {/* Gradients Orbs  */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute top-20 left-10 w-96 h-96 bg-sage-green-200 rounded-full blur-3xl opacity-30"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className="absolute bottom-20 right-10 w-[32rem] h-[32rem] bg-sage-green-100 rounded-full blur-3xl opacity-20"
+        />
       </div>
 
-      {/* ========= CONTENT ========== */}
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* ============= LEFT COLUMN - TEXT ============ */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Badge */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left Column: Content */}
+          <div className="text-center lg:text-left">
+            {/* Badge using Badge Component */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-8"
+              animate={{ opacity: 1, y: 20 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 mb-8"
             >
-              <CheckCircle className="w-4 h-4" />
-              Gestión de Restaurantes Simplificada
+              <Badge variant="success" size="md" className="glass-sage-light">
+                <Sparkles className="w-4 h-4 mr-1" />
+                Sistema #1 en Gestión de Restaurantes
+              </Badge>
             </motion.div>
 
-            {/* Main Headline */}
-            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-neutral-900 mb-6 leading-tight">
-              Gestiona tu{" "}
-              <span className="bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-                Restaurante
-              </span>{" "}
-              con Elegancia
-            </h1>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mb-8"
+            >
+              {/* Line 1: Large */}
+              <span className="block text-6xl md:text-7xl lg:text-8xl font-extrabold text-carbon-900 leading-tight-custom tracking-tighter mb-2">
+                Gestiona
+              </span>
 
-            {/* Description  */}
-            <p className="text-lg lg:text-xl text-neutral-600 mb-8 leading-relaxed font-light">
-              Sazonarte es el sistema de gestión que tu restaurante necesita.
-              Controla mesas, menú, órdenes y más, todo en una plataforma
-              moderna y fácil de usar.
-            </p>
+              {/* Line 2: Extra Large */}
+              <span className="block text-7xl md:text-8xl lg:text-display-md font-black text-carbon-900 leading-tight-custom tracking-tighter mb-2">
+                tu
+              </span>
+
+              {/* Line 3: Gradient Highlight */}
+              <span className="block text-7xl md:text-8xl lg:text-display-md font-black text-gradient-sage leading-tight-custom tracking-tighter">
+                Restaurante
+              </span>
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl md:text-2xl text-carbon-700 font-light leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0"
+            >
+              La plataforma todo-en-uno que {""}
+              <span className="font-semibold text-sage-green-600">
+                simplifica
+              </span>{" "}
+              la gestión de pedidos, mesas y menú de tu restaurante.
+            </motion.p>
 
             {/* Feature Bullets */}
-            <ul className="space-y-3 mb-10">
-              {[
-                "Gestión de mesas en tiempo real",
-                "Menú digital actualizable al instante",
-                "Órdenes centralizadas y eficientes",
-                "Dashboard con estadísticas detalladas",
-              ].map((feature, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="flex items-center gap-3 text-neutral-700"
-                >
-                  <CheckCircle className="w-5 h-5 text-primary-500 flex-shrink-0" />
-                  <span className="font-light">{feature}</span>
-                </motion.li>
-              ))}
-            </ul>
-
-            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4"
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-12 justify-center lg:justify-start"
             >
-              {/* Primary CTA */}
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-sage-green-400"></div>
+                <span className="text-carbon-700 font-medium">
+                  Sin instalación
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-sage-green-400"></div>
+                <span className="text-carbon-700 font-medium">
+                  Gratis 30 días
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-sage-green-400"></div>
+                <span className="text-carbon-700 font-medium">
+                  Soporte 24/7
+                </span>
+              </div>
+            </motion.div>
+
+            {/* CTA Buttons using Button component */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
               <Link to="/login">
-                <Button variant="primary" size="lg" className="group">
-                  Comenzar Ahora
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="group shadow-soft-log hover:shadow-soft-xl hover:-translate-y-0.5"
+                >
+                  <span>Comenzar Ahora</span>
+                  <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
 
-              {/* Secondary CTO   */}
-              <Button variant="ghost" size="lg" className="group">
-                <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+              <Button
+                variant="secondary"
+                size="lg"
+                className="glass-sage-light hover:-translate-y-0.5"
+              >
                 Ver Demo
               </Button>
             </motion.div>
-          </motion.div>
+          </div>
 
-          {/* ================== RIGHT COLUMN =================== */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
-          >
-            {/* Mockup Image Container  */}
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-gradient-to-br from-primary-50 to-primary-100">
-              {/* Placeholder for Dashboard Screenshot */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-white flex items-center justify-center p-12">
-                <div className="w-full h-full bg-white rounded-2xl shadow-xl p-8 overflow-hidden">
-                  {/* Simulated Dashboard Content */}
-                  <div className="space-y-4">
-                    {/* Header */}
-                    <div className="h-12 bg-primary-50 rounded-lg"></div>
-                    {/* Stats  */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="h-20 bg-primary-100 rounded-lg"></div>
-                      <div className="h-20 bg-green-100 rounded-lg"></div>
-                      <div className="h-20 bg-blue-100 rounded-lg"></div>
-                    </div>
-                    {/* Content */}
-                    <div className="h-32 bg-neutral-100 rounded-lg"></div>
-                    <div className="h-32 bg-neutral-100 rounded-lg"></div>
-                    <div className="h-32 bg-neutral-100 rounded-lg"></div>
-                  </div>
+          {/* Right Column: Glass Cards */}
+          <div className="relative">
+            {/* Main Dashboard Mockup Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative glass-light rounded-[2rem] p-8 lg:p-12 shadow-soft-xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <p className="text-sm font-medium text-carbon-500 mb-1">
+                    Dashboard
+                  </p>
+                  <h3 className="text-2xl font-bold text-carbon-900">
+                    Vista General
+                  </h3>
+                </div>
+
+                <div className="w-12 h-12 bg-gradient-sage rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-sage-green-600" />
                 </div>
               </div>
-            </div>
 
-            {/* Floating Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.2 }}
-              className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6 border border-neutral-100"
-            >
-              <div className="flex items-center gap-3">
-                <div className=" w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-white" />
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {/* Stat Card 1 */}
+                <div className="glass-sage-light rounded-xl p-4">
+                  <p className="text-sm text-carbon-500 mb-1">Pedidos Hoy</p>
+                  <p className="text-3xl font-bold text-carbon-900">142</p>
+                  <p className="text-xs text-sage-green-600 font-medium mt-1">
+                    +18% vs ayer
+                  </p>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-neutral-900">98%</div>
-                  <div className="text-xs text-neutral-600 font-light">
-                    Satisfaccion
-                  </div>
+
+                {/* Stat Card 2 */}
+                <div className="glass-sage-light rounded-xl p-4">
+                  <p className="text-sm text-carbon-500 mb-1">Mesas Activas</p>
+                  <p className="text-3xl font-bold text-carbon-900">12</p>
+                  <p className="text-xs text-sage-green-600 font-medium mt-1">
+                    75% ocupación
+                  </p>
+                </div>
+
+                {/* Stat Card 3 */}
+                <div className="glass-sage-light rounded-xl p-4">
+                  <p className="text-sm text-carbon-500 mb-1">Ingresos</p>
+                  <p className="text-3xl font-bold text-carbon-900">$3.2K</p>
+                  <p className="text-xs text-sage-green-600 font-medium mt-1">
+                    +12% vs ayer
+                  </p>
+                </div>
+
+                {/* Stat Card 4 */}
+                <div className="glass-sage-light rounded-xl p-4">
+                  <p className="text-sm text-carbon-500 mb-1">Productos</p>
+                  <p className="text-3xl font-bold text-carbon-900">48</p>
+                  <p className="text-xs text-sage-green-600 font-medium mt-1">
+                    En menú
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-carbon-700 font-medium">
+                    Meta del Día
+                  </span>
+                  <span className=" text-sage-green-600 font-semibold">
+                    82%
+                  </span>
+                </div>
+
+                <div className="h-2 bg-sage-green-100 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "82%" }}
+                    transition={{ duration: 1.5, delay: 0.8 }}
+                    className="h-full bg-gradient-to-ra from-sage-green-300 to-sage-green-400 rounded-full"
+                  />
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+
+            {/* Floating Badge using component */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="absolute -right-4 -bottom-12 glass-sage-medium rounded-2xl p-4 shadow-soft-lg animate-float"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-sage-green-300 rounded-xl flex items-center justify-center">
+                  <Users className="w-5 h-5 text-sage-green-700" />
+                </div>
+                <div>
+                  <p className="text-xs text-carbon-500 font-medium">
+                    Clientes Felices
+                  </p>
+                  <p className="text-xl font-bold text-carbon-900">1.200+</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

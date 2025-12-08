@@ -11,9 +11,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * Input Component
  *
  * Reusable input with label, error state, helper text and fullWidth
- *
- * @example
- * <Input label='Email' type='email' error='Invalid email' placeholder='tucorreo@mail.com' />
  */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -28,34 +25,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    // // Generate unique ID if noot provided
-    // const inputId = id || `input-${Math.random().toString(36).substring(2, 9)}`;
-
-    // Base input styles
-    const baseStyles =
-      "px-4 py-3 bg-white border rounded-xl text-[15px] font-light placeholder:text-neutral-400 transition-all duration-300";
-
-    // Error or normal state
-    const stateStyles = error
-      ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
-      : "border-neutral-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20";
-
+    // Width Styles
     const widthClass = fullWidth ? "w-full" : "";
 
-    // Combine styles
-    const inputStyles = [baseStyles, stateStyles, className].join(" ");
+    // Base input styles
+    const inputStyles = `
+w-full px-4 py-2.5 text-carbon-900 text-base bg-white border-2 rounded-xl transition-all duration-200 ${error ? "border-red-300 focus:border-red-500 focus:ring-200 focus:ring-red-200" : "border-sage-border-subtle focus:border-sage-green-300 focus:ring-2 focus:ring-sage-green-100"} placeholder:text-carbon-300 disabled:bg-sage-50 disabled:text-carbon-500 disabled:cursor-not-allowed ${className}`
+      .trim()
+      .replace(/\s+/g, "");
 
     return (
       <div className={widthClass}>
         {/* Label*/}
         {label && (
-          <label className="block text-sm font-medium text-neutral-700 mb-2 tracking-wide">
+          <label
+            htmlFor={id}
+            className="block text-sm font-medium text-carbon-700 mb-2 tracking-wide"
+          >
             {label}
           </label>
         )}
 
         {/*Input field*/}
-        <input ref={ref} className={inputStyles} {...props} />
+        <input ref={ref} id={id} className={inputStyles} {...props} />
 
         {/* Error message*/}
         {error && (
@@ -64,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Helper text*/}
         {!error && helperText && (
-          <p className="mt-1.5 text-sm text-neutral-500 font-light">
+          <p className="mt-1.5 text-xs text-carbon-500 font-light">
             {helperText}
           </p>
         )}

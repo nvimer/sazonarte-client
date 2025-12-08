@@ -7,213 +7,230 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom global styles */
-@layer base {
-  * {
-    @apply antialiased;
-  }
+/* ====================================
+   CUSTOM CSS FOR SAGE GARDEN LANDING
+   ==================================== */
 
-  html {
-    @apply scroll-smooth;
-  }
-
-  body {
-    @apply bg-neutral-50 text-neutral-900 font-sans;
-    font-feature-settings:
-      "kern" 1,
-      "liga" 1,
-      "calt" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* Headings minimalist */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-semibold tracking-tight text-neutral-900;
-  }
-
-  h1 {
-    @apply text-5xl md:text-6xl lg:text-7xl;
-  }
-
-  h2 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
-  }
-
-  h3 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
-  }
-
-  h4 {
-    @apply text-2xl md:text-3xl lg:text-4xl;
-  }
-
-  h5 {
-    @apply text-xl md:text-2xl lg:text-3xl;
-  }
-
-  h6 {
-    @apply text-lg md:text-xl;
-  }
-
-  /* Paragraphs */
-  p {
-    @apply font-light text-[15px] leading-relaxed text-neutral-600;
-  }
-
-  /* Link */
-  a {
-    @apply transition-colors duration-300;
-  }
-
-  /* Buttons reset  */
-  button {
-    @apply transition-all duration-300;
-  }
-
-  /* Input reset */
-  input,
-  textarea,
-  select {
-    @apply transition-all duration-300;
-  }
-
-  /* Remove default focus outline */
-  *:focus {
-    @apply outline-none;
-  }
-}
-
-/* Custom Utilities */
-
+/* ====================================
+   1. GLASSMORPHISM EFFECTS
+   ==================================== */
 @layer utilities {
 
-  /* Text Balance */
-  .text-balance {
-    text-wrap: balance;
+  /* Glass Effect Light */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
-  /* Gradient text  */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent;
+  /* Glass Effect Medium */
+  .glass-medium {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 255, 0.4);
   }
 
-  /* Backdrop Blur Strong */
-  .backdrop-blur-strong {
+  /* Glass Effect Dark */
+  .glass-dark {
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  /* Shadow Smooth */
-  .shadow-smooth {
-    box-shadow:
-      0 1px 3px 0 rgba(0, 0, 0, 0.02),
-      0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  .glass-sage-light {
+    background: rgba(168, 197, 180, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(168, 197, 180, 0.2);
   }
 
-  .shadow-smooth-lg {
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.05),
-      0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  .glass-sage-medium {
+    background: rgba(168, 197, 180, 0.18);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(168, 197, 180, 0.4);
   }
 
-  /* Container Responsive */
-  .container-responsive {
-    @apply mx-auto px-6 md:px-8 lg:px-12 xl:px-16;
-  }
-}
-
-/* ==================== COMPONENTES BASE ==================== */
-@layer components {
-
-  /* Card Minimalista */
-  .card {
-    @apply bg-white border border-neutral-100 rounded-2xl p-8 shadow-smooth hover:shadow-smooth-lg transition-all duration-400;
-  }
-
-  /* Button Primary */
-  .btn-primary {
-    @apply px-6 py-3 bg-primary-500 text-white rounded-xl font-medium tracking-wide hover:bg-primary-600 transition-all duration-300 shadow-smooth hover:shadow-smooth-lg;
-  }
-
-  /* Button Secondary */
-  .btn-secondary {
-    @apply px-6 py-3 bg-neutral-100 text-neutral-700 rounded-xl font-medium tracking-wide hover:bg-neutral-200 transition-all duration-300;
-  }
-
-  /* Button Ghost */
-  .btn-ghost {
-    @apply px-6 py-3 text-neutral-600 rounded-xl font-normal tracking-wide hover:bg-neutral-50 transition-all duration-300;
-  }
-
-  /* Input Base */
-  .input-base {
-    @apply w-full px-4 py-3 bg-white border border-neutral-200 rounded-xl text-[15px] font-light placeholder:text-neutral-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-300;
-  }
-
-  /* Badge */
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-normal tracking-wide border;
-  }
-
-  .badge-primary {
-    @apply badge bg-primary-50 text-primary-700 border-primary-100;
-  }
-
-  .badge-neutral {
-    @apply badge bg-neutral-50 text-neutral-700 border-neutral-100;
+  .glass-sage-dark {
+    background: rgba(168, 197, 180, 0.25);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(168, 197, 180, 0.4);
   }
 }
 
-/* ==================== ANIMACIONES SCROLL ==================== */
+/* ====================================
+   2. SOFT SHADOW 
+   ==================================== */
+@layer utilities {
+  .shadow-soft-xs {
+    box-shadow: 0 1px 2px rgba(45, 52, 54, 0.04);
+  }
+
+  .shadow-soft-sm {
+    box-shadow: 0 2px 4px rgba(45, 52, 54, 0.06);
+  }
+
+  .shadow-soft-md {
+    box-shadow: 0 4px 8px rgba(45, 52, 54, 0.08);
+  }
+
+  .shadow-soft-lg {
+    box-shadow: 0 8px 16px rgba(45, 52, 54, 0.1);
+  }
+
+  .shadow-soft-xl {
+    box-shadow: 0 16px 32px rgba(45, 52, 54, 0.12);
+  }
+
+  /* Sage Glow Shadow */
+  .shadow-sage-glow {
+    box-shadow: 0 8px 24px rgba(168, 197, 180, 0.2);
+  }
+}
+
+/* ====================================
+   3. GRADIENT UTILITIES 
+   ==================================== */
 @layer utilities {
 
-  /* Fade in on scroll */
-  .fade-in-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
+  /* Sage Gradient  */
+  .bg-gradient-sage {
+    background: linear-gradient(135deg,
+        rgba(168, 197, 180, 0.15) 0%,
+        rgba(143, 176, 157, 0.1) 100%);
   }
 
-  .fade-in-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
+  /* Sage Gradient Hover  */
+  .bg-gradient-sage-hover {
+    background: linear-gradient(135deg,
+        rgba(168, 197, 180, 0.25) 0%,
+        rgba(143, 176, 157, 0.15) 100%);
+  }
+
+  /* Text Gradient Sage  */
+  .text-gradient-sage {
+    background: linear-gradient(135deg, #a8c5b4 0%, #769b86 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 
-/* ==================== SCROLLBAR CUSTOM (Opcional) ==================== */
-/* Scrollbar minimalista */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+/* ====================================
+   4. CUSTOM ANIMATIONS  
+   ==================================== */
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+/* Float Animation  */
+@keyframes float {
 
-::-webkit-scrollbar-thumb {
-  background: theme("colors.neutral.200");
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: theme("colors.neutral.300");
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
+  0%,
   100% {
-    background-position: 200% 0;
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glow Pulse */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(168, 197, 180, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(168, 197, 180, 0.5);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ====================================
+   5. TYPOGRAPHY   
+   ==================================== */
+@layer utilities {
+
+  /* Ultra Light Weight */
+  .font-ultralight {
+    font-weight: 200;
+  }
+
+  /* Tight Letter Spacing  */
+  .tracking-tighter {
+    letter-spacing: -0.05em;
+  }
+
+  /* Very Tight Line Height  */
+  .leading-thight-custom {
+    line-height: 0.95;
+  }
+}
+
+/* ====================================
+   6. BUTTON STYLES    
+   ==================================== */
+@layer components {
+
+  /* Primary Button  */
+  .btn-sage-primary {
+    @apply px-8 py-4 bg-sage-green-300 text-carbon-900 rounded-2xl font-semibold text-lg;
+    @apply hover:bg-sage-green-400 active:bg-sage-green-500;
+    @apply transition-all duration-300 ease-out;
+    @apply shadow-soft-md hover:shadow-soft-lg;
+  }
+
+  /* Glass Button  */
+  .btn-sage-glass {
+    @apply px-8 py-4 glass-sage-dark text-carbon-900 rounded-2xl font-semibold text-lg;
+    @apply hover:glass-sage-medium active:glass-sage-dark;
+    @apply transition-all duration-300 ease-out;
+    @apply shadow-soft-md hover:shadow-soft-lg;
+  }
+
+  /* Outline Button  */
+  .btn-sage-outline {
+    @apply px-8 py-4 bg-transparent border-2 border-sage-green-300 text-sage-green-600 rounded-2xl font-semibold text-lg;
+    @apply hover:bg-sage-green-50 active:bg-sage-green-100;
+    @apply transition-all duration-300 ease-out;
+  }
+}
+
+/* ====================================
+   7. RESPONSIVE UTILITIES    
+   ==================================== */
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ====================================
+   8. SECTION SPACING     
+   ==================================== */
+
+@layer utilities {
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-34;
+  }
+
+  .section-padding-sm {
+    @apply py-16 md:py-20 lg:py-24;
   }
 }

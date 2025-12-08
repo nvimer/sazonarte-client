@@ -1,58 +1,72 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { forwardRef, type ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
-  size?: "sm" | "md" | "lg" | "xl";
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   isLoading?: boolean;
 }
 
-export function Button({
-  children,
-  variant = "primary",
-  size = "md",
-  fullWidth = false,
-  isLoading = false,
-  disabled,
-  className = "",
-  ...props
-}: ButtonProps) {
-  const baseStyles =
-    "inline-flex items-center justify-center font-medium tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed";
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      variant = "primary",
+      size = "md",
+      fullWidth = false,
+      isLoading = false,
+      className = "",
+      disabled,
+      ...props
+    },
+    ref,
+  ) => {
+    const baseStyles =
+      "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2";
 
-  const variants = {
-    primary:
-      "bg-primary-500 text-white hover:bg-primary-600 shadow-smooth hover:shadow-smooth-lg",
-    secondary: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200",
-    outline: "border-2 border-neutral-30 text-neutral-700 hover:bg-neutral-50",
-    ghost: "text-neutral-600 hover:bg-neutral-50",
-    danger: "bg-red-500 text-white hover:bg-red-600 shadhow-smooth",
-  };
+    const variantStyles = {
+      primary:
+        "bg-sage-green-300 text-carbon-900 hover:bg-sage-green-400 active:bg-sage-green-500 focus:ring-sage-green-300 shadow-soft-sm hover:shadow-soft-md",
+      secondary:
+        "bg-sage-50 text-carbon-900 hover:bg-sage-green-100 active:bg-sage-200 focus:ring-sage-green-200 border border-sage-border-subtle",
+      outline:
+        "bg-transparent text-sage-green-600 border-2 border-sage-green-300 hover:bg-sage-green-50 active:bg-sage-green-100 focus:ring-sage-green-300",
+      ghost:
+        "bg-transparent text-carbon-700 hover:bg-sage-50 active:bg-sage-100 focus:ring-sage-green-200",
+    };
 
-  const sizes = {
-    sm: "px-4 py-2 text-sm rounded-lg",
-    md: "px-4 py-2.5 text-[-15px] rounded-xl",
-    lg: "px-8 py-3 text-base rounded-xl",
-    xl: "px-10 py-4 text-lg rounded-xl",
-  };
+    const sizeStyles = {
+      sm: "px-4 py-2 text-sm",
+      md: "px-6 py-2.5 text-base",
+      lg: "px-8 py-3 text-lg",
+    };
 
-  const widthClass = fullWidth ? "w-full" : "";
+    const widthStyles = fullWidth ? "w-full" : "";
 
-  return (
-    <button
-      disabled={disabled || isLoading}
-      className={`
-        ${baseStyles}
-        ${variants[variant]}
-        ${sizes[size]}
-        ${widthClass}    
-        ${className}
-      `}
-      {...props}
-    >
-      {isLoading ? (
-        <>
+    const disabledStyles =
+      disabled || isLoading
+        ? "opacity-50 cursor-not-allowed"
+        : "cursor-pointer";
+
+    const buttonStyles = `
+${baseStyles}
+${variantStyles[variant]}
+${sizeStyles[size]}
+${widthStyles}
+${disabledStyles}
+${className}
+`
+      .trim()
+      .replace(/\s+g/, " ");
+
+    return (
+      <button
+        ref={ref}
+        className={buttonStyles}
+        disabled={disabled || isLoading}
+        {...props}
+      >
+        {isLoading && (
           <svg
             className="animate-spin -ml-1 mr-2 h-4 w-4"
             fill="none"
@@ -72,11 +86,11 @@ export function Button({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Cargando...
-        </>
-      ) : (
-        children
-      )}
-    </button>
-  );
-}
+        )}
+        {children}
+      </button>
+    );
+  },
+);
+
+Button.displayName = "Button";

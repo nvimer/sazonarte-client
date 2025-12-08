@@ -1,12 +1,10 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   variant?: "default" | "elevated" | "bordered";
-  padding?: "sm" | "md" | "lg" | "xl";
+  padding?: "none" | "sm" | "md" | "lg";
   hover?: boolean;
-  className?: string;
-  onClick?: () => void;
 }
 
 export function Card({
@@ -15,37 +13,43 @@ export function Card({
   padding = "lg",
   hover = false,
   className = "",
-  onClick,
+  ...props
 }: CardProps) {
+  // Base styles
   const baseStyles = "rounded-2xl transition-all duration-400";
-  const variants = {
+
+  // Variant styles
+  const variantStyles = {
     default: "bg-white border border-neutral-100 shadow-smooth",
     elevated: "bg-white shadow-smooth-lg",
     bordered: "bg-white border-2 border-neutral-200",
   };
 
-  const paddings = {
+  // Padding styles
+  const paddingStyles = {
+    none: "",
     sm: "p-4",
     md: "p-6",
     lg: "p-8",
-    xl: "p-11",
   };
 
   const hoverStyles = hover
-    ? "hover:shadow-smooth-lg hover:-traslate-y-1 cursor-pointer"
+    ? "hover:-traslate-y-1 hover:shadow-soft-lg cursor-pointer"
     : "";
 
+  // Combine all styles
+  const cardStyles = `
+${baseStyles}
+${variantStyles[variant]}
+${paddingStyles[padding]}
+${hoverStyles}
+${className}
+`
+    .trim()
+    .replace(/\s+/g, "");
+
   return (
-    <div
-      onClick={onClick}
-      className={`
-        ${baseStyles} 
-        ${variants[variant]} 
-        ${paddings[padding]} 
-        ${hoverStyles} 
-        ${className}
-      `}
-    >
+    <div className={cardStyles} {...props}>
       {children}
     </div>
   );

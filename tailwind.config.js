@@ -1,38 +1,44 @@
 /** @type {import( 'tailwindcss').Config}*/
 
+import { transform } from "typescript";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 
   theme: {
     extend: {
       colors: {
-        // Pastel Green (Primary)
-
-        primary: {
-          50: "#F0F9F4",
-          100: "#DCFCE7",
-          200: "#BBF7D0",
-          300: "#86EFAC",
-          400: "#4ADE80",
-          500: "#22C55E",
-          600: "#16A34A",
-          700: "#15803D",
-          800: "#166534",
-          900: "#14532D",
+        sage: {
+          50: "#FAFAF8", // Primary background
+          100: "#F5F5F2", // Secondary background
+          200: "#FCFCFB", // Raised surface
+          300: "#F0F0ED", // Sunken surface
         },
 
-        // Cold Grey (Base)
-        neutral: {
-          50: "#FAFAFA",
-          100: "#F5F5F5",
-          200: "#E5E5E5",
-          300: "#D4D4D4",
-          400: "#A3A3A3",
-          500: "#737373",
-          600: "#525252",
-          700: "#404040",
-          800: "#262626",
-          900: "#171717",
+        // Text Colors
+        carbon: {
+          900: "#2D3436", // Primary text
+          700: "#636E72", // Secondary text
+          500: "#B2BEC3", // Tertiary text
+          300: "#DFE6E9", // Disabled text
+        },
+
+        // Sage Green Accent
+        "sage-green": {
+          50: "#F1F7F4",
+          100: "#E3EFE9",
+          200: "#C7DFD3",
+          300: "#A8C5B4", // Main accent ⭐
+          400: "#8FB09D",
+          500: "#769B86",
+          600: "#5D8770",
+        },
+
+        // Border Colors
+        "sage-border": {
+          subtle: "#E8EDEB",
+          medium: "#DDE4E2",
+          focus: "#A8C5B4",
         },
       },
 
@@ -45,28 +51,26 @@ export default {
 
       // Font Size
       fontSize: {
-        "2xs": ["0.625rem", { lineHeight: "0.75rem" }], // 10px
-        xs: ["0.75rem", { lineHeight: "1rem" }], // 12px
-        sm: ["0.875rem", { lineHeight: "1.25rem" }], // 14px
-        base: ["0.9375rem", { lineHeight: "1.5rem" }], // 15px
-        lg: ["1.125rem", { lineHeight: "1.75rem" }], // 18px
-        xl: ["1.25rem", { lineHeight: "1.875rem" }], // 20px
-        "2xl": ["1.5rem", { lineHeight: "2rem" }], // 24px
-        "3xl": ["2rem", { lineHeight: "2.5rem" }], // 32px
-        "4xl": ["2.5rem", { lineHeight: "3rem" }], // 40px
-        "5xl": ["3rem", { lineHeight: "3.5rem" }], // 48px
-        "6xl": ["3.75rem", { lineHeight: "4rem" }], // 60px
-        "7xl": ["4.5rem", { lineHeight: "4.75rem" }], // 72px
-        "8xl": ["6rem", { lineHeight: "6.25rem" }], // 96px
-      },
-
-      fontWeight: {
-        thin: "100",
-        extralight: "200",
-        light: "300",
-        normal: "400",
-        medium: "500",
-        semibold: "600",
+        "display-xl": [
+          "8rem",
+          { lineHeight: "0.95", letterSpacing: "-0.02em", fontWeight: "800" },
+        ],
+        "display-lg": [
+          "6rem",
+          { lineHeight: "0.95", letterSpacing: "-0.02em", fontWeight: "800" },
+        ],
+        "display-md": [
+          "4.5rem",
+          { lineHeight: "1", letterSpacing: "-0.02em", fontWeight: "700" },
+        ],
+        "display-sm": [
+          "3.5rem",
+          { lineHeight: "1", letterSpacing: "-0.01em", fontWeight: "700" },
+        ],
+        hero: [
+          "5rem",
+          { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "800" },
+        ],
       },
 
       // Spacing
@@ -76,32 +80,27 @@ export default {
         26: "6.5rem", // 104px
         30: "7.5rem", // 120px
         34: "8.5rem", // 136px
-        38: "9.5rem", // 152px
       },
 
-      // Layout
-      maxWidth: {
-        "8xl": "88rem", // 1408px
-        "9xl": "96rem", // 1536px
-      },
-
-      // Borders
+      // Border radius
       borderRadius: {
         "4xl": "2rem", // 32px
         "5xl": "2.5rem", // 40px
       },
 
-      // Animations
-      transitionDuration: {
-        400: "400ms",
-        600: "600ms",
-        800: "800ms",
+      // Backdrop Blur
+      backdropBlur: {
+        xs: "2px",
       },
 
+      // Animations
       animation: {
-        "fade-in": "fadeIn 0.6s ease-in-out",
+        "fade-in": "fadeIn 0.6s ease-out",
         "slide-up": "slideUp 0.6s ease-out",
-        "scale-in": "scaleIn 0.4s ease-out",
+        "slide-down": "slideDown 0.6s ease-out",
+        "scale-in": "scaleIn 0.5s ease-out",
+        float: "float 3s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite",
       },
 
       keyframes: {
@@ -113,9 +112,21 @@ export default {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
+        slideDown: {
+          "0%": { transform: "translateY(-20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
         scaleIn: {
           "0%": { transform: "scale(0.95)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        float: {
+          "0%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        glow: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(168, 197, 180, 0.3)" },
+          "50%": { boxShadow: "0 0 30px rgba(168, 197, 180, 0.5)" },
         },
       },
     },
