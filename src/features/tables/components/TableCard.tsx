@@ -85,17 +85,26 @@ export function TableCard({ table, onEdit }: TableCardProps) {
         [TableStatus.AVAILABLE]: {
             variant: "success" as const,
             label: "Disponible",
-            color: "bg-green-50 border-green-200",
+            borderColor: "border-sage-green-300",
+            bgColor: "bg-sage-green-50",
+            iconBg: "bg-sage-green-100",
+            iconText: "text-sage-green-700",
         },
         [TableStatus.OCCUPIED]: {
             variant: "error" as const,
             label: "Ocupada",
-            color: "bg-red-50 border-red-200",
+            borderColor: "border-red-300",
+            bgColor: "bg-red-50",
+            iconBg: "bg-red-100",
+            iconText: "text-red-700",
         },
         [TableStatus.NEEDS_CLEANING]: {
             variant: "warning" as const,
             label: "Limpieza",
-            color: "bg-yellow-50 border-yellow-200",
+            borderColor: "border-yellow-300",
+            bgColor: "bg-yellow-50",
+            iconBg: "bg-yellow-100",
+            iconText: "text-yellow-700",
         },
     };
 
@@ -107,27 +116,29 @@ export function TableCard({ table, onEdit }: TableCardProps) {
             <Card
                 variant="elevated"
                 padding="lg"
-                className={`transition-all duration-300 hover:shadow-xl border-2 ${currentStatus.color}`}
+                className={`transition-all duration-300 hover:shadow-soft-xl border-2 ${currentStatus.borderColor} hover:-translate-y-1`}
             >
                 {/* ==================== HEADER ==================== */}
                 <div className="flex items-start justify-between mb-6">
                     {/* Table Number Display */}
                     <div className="flex items-center gap-4">
                         {/* Large table number icon */}
-                        <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center border-2 border-primary-200">
-                            <span className="text-2xl font-bold text-primary-700">
+                        <div
+                            className={`w-16 h-16 ${currentStatus.iconBg} rounded-2xl flex items-center justify-center border-2 ${currentStatus.borderColor}`}
+                        >
+                            <span className={`text-2xl font-bold ${currentStatus.iconText}"`}>
                                 {table.number}
                             </span>
                         </div>
 
                         {/* Table info */}
                         <div>
-                            <h3 className="text-xl font-semibold text-neutral-900 mb-1">
+                            <h3 className="text-xl font-semibold text-carbon-900 mb-1">
                                 Mesa {table.number}
                             </h3>
                             {/* Location with icon  */}
                             {table.location && (
-                                <div className="flex items-center gap-1.5 text-neutral-600">
+                                <div className="flex items-center gap-1.5 text-carbon-600">
                                     <MapPin className="w-4 h-4" />
                                     <span className="text-sm font-light">{table.location}</span>
                                 </div>
@@ -143,7 +154,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
 
                 {/* ==================== QUICK STATUS ACTIONS  ==================== */}
                 <div className="mb-6">
-                    <p className="text-sm font-medium text-neutral-700 mb-3">
+                    <p className="text-sm font-medium text-carbon-700 mb-3">
                         Cambiar estado:
                     </p>
 
@@ -154,7 +165,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
                             <button
                                 onClick={() => handleStatusChange(TableStatus.AVAILABLE)}
                                 disabled={isUpdatingStatus}
-                                className="px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-3 py-2 text-sm font-medium text-sage-green-700 bg-sage-green-50 hover:bg-sage-green-100 border border-sage-green-300 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Disponible
                             </button>
@@ -165,7 +176,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
                             <button
                                 onClick={() => handleStatusChange(TableStatus.OCCUPIED)}
                                 disabled={isUpdatingStatus}
-                                className="px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-3 py-2 text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-300 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Ocupada
                             </button>
@@ -176,7 +187,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
                             <button
                                 onClick={() => handleStatusChange(TableStatus.NEEDS_CLEANING)}
                                 disabled={isUpdatingStatus}
-                                className="px-3 py-2 text-sm font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 border border-yellow-200 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="px-3 py-2 text-sm font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 border border-yellow-300 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Limpieza
                             </button>
@@ -185,7 +196,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
                 </div>
 
                 {/* ==================== MAIN ACTIONS ==================== */}
-                <div className="flex gap-3 pt-6 border-t border-neutral-100">
+                <div className="flex gap-3 pt-6 border-t border-sage-border-subtle">
                     {/* Edit Button */}
                     <Button
                         variant="ghost"
@@ -219,7 +230,7 @@ export function TableCard({ table, onEdit }: TableCardProps) {
                 onClose={() => setIsDeleteDialogOpen(false)}
                 onConfirm={handleDelete}
                 title="Eliminar Mesa"
-                description={`¿Estás seguro de que deseas eliminar la mesa #${table.number}? Esta acción no se puede deshacer.`}
+                message={`¿Estás seguro de que deseas eliminar la mesa #${table.number}? Esta acción no se puede deshacer.`}
                 confirmText="Eliminar"
                 cancelText="Cancelar"
                 variant="danger"

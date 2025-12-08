@@ -56,7 +56,7 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
             : {
                 number: undefined,
                 location: "",
-                status: TableStatus.OCCUPIED,
+                status: TableStatus.AVAILABLE,
             },
     });
 
@@ -105,13 +105,13 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
 
     // =============== RENDER =================
     return (
-        <Card variant="elevated" padding="xl">
+        <Card variant="elevated" padding="lg" className="mb-8">
             {/* ================== FORM HEADER =============== */}
             <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
+                <h2 className="text-2xl font-semibold text-carbon-900 mb-2">
                     {isEditing ? "Editar Mesa" : "Nueva Mesa"}
                 </h2>
-                <p>
+                <p className="text-carbon-600 font-light">
                     {isEditing
                         ? "Modifica los datos de la mesa"
                         : "Completa los datos para crear una nueva mesa"}
@@ -138,7 +138,7 @@ export function TableForm({ table, onSuccess, onCancel }: TableFormProps) {
                 />
 
                 {/* ================== ACTIONS BUTTON ============= */}
-                <div className="flex gap-3 pt-6">
+                <div className="flex gap-3 py-6">
                     {/* Submit Button */}
                     <Button
                         type="submit"
