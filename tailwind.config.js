@@ -19,6 +19,7 @@ export default {
         carbon: {
           900: "#2D3436", // Primary text
           700: "#636E72", // Secondary text
+          600: "#808B8F",
           500: "#B2BEC3", // Tertiary text
           300: "#DFE6E9", // Disabled text
         },

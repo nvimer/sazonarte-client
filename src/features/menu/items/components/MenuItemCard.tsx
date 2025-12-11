@@ -16,13 +16,6 @@ interface MenuItemCardProps {
  * MenuItemCard Component
  *
  * Displays a single menu item with details and actions
- *
- * Features /
- * - Item name, description, and price
- * - Availability status
- * - Image preview
- * - Extra item indicator
- * - Edit and delete actions
  */
 export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
     // ================== STATE ==================
@@ -34,13 +27,13 @@ export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
             <Card
                 variant="elevated"
                 padding="lg"
-                className="transition-all duration-300 hover:shadow-xl group"
+                className="transition-all duration-300 hover:shadow-soft-xl hover:-translate-y-1 group"
             >
                 {/* ========== HEADER WITH IMAGE ============ */}
                 <div className="mb-4">
                     {/* Image preview or placeholder */}
                     {item.imageUrl ? (
-                        <div className="w-full h-40 rounded-xl overflow-hidden mb-4 border-2 border-neutral-100">
+                        <div className="w-full h-40 rounded-xl overflow-hidden mb-4 border-2 bg-sage-border-subtle">
                             <img
                                 src={item.imageUrl}
                                 alt={item.name}
@@ -48,19 +41,19 @@ export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
                             />
                         </div>
                     ) : (
-                        <div className="w-full h-40 bg-neutral-100 rounded-xl flex items-center justify-center mb-4 border-2 border-neutral-200">
-                            <ImageIcon className="w-12 h-12 text-neutral-400" />
+                        <div className="w-full h-40 bg-sage-100 rounded-xl flex items-center justify-center mb-4 border-2 border-sage-border-subtle">
+                            <ImageIcon className="w-12 h-12 text-sage-green-300" />
                         </div>
                     )}
 
                     {/* Name and Badges row */}
                     <div className="flex justify-between items-start mb-3 gap-3">
                         <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-neutral-900 mb-1 truncate">
+                            <h3 className="text-lg font-semibold text-carbon-900 mb-1 truncate">
                                 {item.name}
                             </h3>
                             {/* Category ID indicator */}
-                            <p className="text-sm text-neutral-500 font-light">
+                            <p className="text-sm text-carbon-500 font-light">
                                 Categoría: {item.categoryId}
                             </p>
                         </div>
@@ -85,17 +78,17 @@ export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
 
                 {/* =========== DESCRIPTION =========== */}
                 {item.description && (
-                    <div className="mb-4 p-3 bg-neutral-50 rounded-lg border border-neutral-100">
-                        <p className="text-sm text-neutral-700 font-light leading-relaxed">
+                    <div className="mb-4 p-3 bg-sage-50 rounded-lg border border-sage-border-subtle">
+                        <p className="text-sm text-carbon-700 font-light leading-relaxed">
                             {item.description}
                         </p>
                     </div>
                 )}
 
                 {/* ========== PRICE =========== */}
-                <div className="mb-6 p-4 bg-primary-50 rounded-xl border-2 border-primary-100">
+                <div className="mb-6 p-4 bg-gradient-sage rounded-xl border-2 border-sage-green-200">
                     <div className="flex items-center justify-center gap-2">
-                        <DollarSign className="w-6 h-6 text-primary-600" />
+                        <DollarSign className="w-6 h-6 text-sage-green-700" />
                         <span className="text-3xl font-bold text-primary-700">
                             {item.price}
                         </span>
@@ -131,7 +124,7 @@ export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
                 onClose={() => setIsDeleteDialogOpen(false)}
                 onConfirm={() => onDelete(item.id)}
                 title="Eliminar Producto"
-                description={`¿Estás seguro que deseas eliminar el producto "${item.name}"? Esta acción no se puede deshacer.`}
+                message={`¿Estás seguro que deseas eliminar el producto "${item.name}"? Esta acción no se puede deshacer.`}
                 confirmText="Eliminar"
                 cancelText="Cancelar"
                 variant="danger"
