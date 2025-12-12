@@ -1,4 +1,3 @@
-import { TrendingUp, TrendingUpDown } from "lucide-react";
 import type { ReactNode } from "react";
 import { Card } from "../Card";
 
@@ -20,12 +19,6 @@ export function StatCard({
     icon,
     description,
 }: StatCardProps) {
-    const trendColors = {
-        up: "text-primary-600",
-        down: "text-red-600",
-        neutral: "text-neutral-600",
-    };
-
     return (
         <Card variant="elevated" padding="lg" hover>
             <div className="flex items-start justify-between">
