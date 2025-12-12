@@ -94,7 +94,7 @@ export function FeaturesSection() {
 
         {/* Features Grid using Card component */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
+          {features.map((feature, _index) => {
             const Icon = feature.icon;
 
             return (

@@ -13,7 +13,6 @@ import type {
   UpdateMenuCategoryInput,
   CreateMenuItemInput,
   UpdateMenuItemInput,
-  CategorySearchParams,
   ApiResponse,
   PaginatedResponse,
   PaginationParams,
@@ -45,9 +44,7 @@ export const getCategories = async (params?: PaginationParams) => {
  * @param params - Params of search and pagination
  * @returns Paginated filted listed of menu categories
  */
-export const searchCategories = async (
-  params: PaginationParams & CategorySearchParams,
-) => {
+export const searchCategories = async (params: PaginationParams) => {
   const { data } = await axiosClient.get<
     ApiResponse<PaginatedResponse<MenuCategory>>
   >("/menu/categories/search", { params });

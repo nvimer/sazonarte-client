@@ -122,7 +122,10 @@ export function MenuItemCard({ item, onEdit, onDelete }: MenuItemCardProps) {
             <ConfirmDialog
                 isOpen={isDeleteDialogOpen}
                 onClose={() => setIsDeleteDialogOpen(false)}
-                onConfirm={() => onDelete(item.id)}
+                onConfirm={() => {
+                    onDelete(item.id);
+                    setIsDeleteDialogOpen(false); // Close modal after delete
+                }}
                 title="Eliminar Producto"
                 message={`¿Estás seguro que deseas eliminar el producto "${item.name}"? Esta acción no se puede deshacer.`}
                 confirmText="Eliminar"

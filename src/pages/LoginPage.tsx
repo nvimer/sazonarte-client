@@ -204,6 +204,7 @@ export default function LoginPage() {
               size="lg"
               fullWidth
               disabled={isLoading}
+              isLoading={isLoading}
               className="group mt-6 shadow-soft-lg hover:shadow-soft-xl"
             >
               {!isLoading && (

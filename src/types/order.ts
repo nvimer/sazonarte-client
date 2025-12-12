@@ -4,9 +4,9 @@
  */
 
 import { OrderStatus, OrderType, PaymentMethod } from "./enums";
-import { User } from "./user";
-import { Table } from "./table";
-import { MenuItem } from "./menu";
+import type { User } from "./user";
+import type { Table } from "./table";
+import type { MenuItem } from "./menu";
 
 /**
  * Cliente (Customer)

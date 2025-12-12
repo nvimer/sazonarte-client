@@ -34,7 +34,7 @@ export function useUpdateTableStatus() {
     },
 
     // On error: rollback
-    onError: (err, variables, context) => {
+    onError: (_err, _variables, context) => {
       if (context?.previousTables) {
         queryClient.setQueryData(queryKeys.tables.all, context.previousTables);
       }

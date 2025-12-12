@@ -94,7 +94,10 @@ export function CategoryCard({
             <ConfirmDialog
                 isOpen={isDeleteDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                onConfirm={() => onDelete(category.id)}
+                onConfirm={() => {
+                    onDelete(category.id);
+                    setIsDialogOpen(false); // Close modal after delete
+                }}
                 title="Eliminar Categoría"
                 message={`¿Estás seguro de que deseas eliminar la categoría "${category.name}"? Esta acción no se puede deshacer.`}
                 confirmText="Eliminar"

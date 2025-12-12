@@ -66,7 +66,7 @@ export function DashboardPage() {
       {/* Content Grid */}
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Recent Tables */}
-        <Card variant="elevated" padding="xl">
+        <Card variant="elevated" padding="lg">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-xl font-semibold text-neutral-900 mb-2">
