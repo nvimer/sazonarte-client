@@ -5,7 +5,6 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { DashboardPage } from "./pages/DashboardPage";
 import { TablesPage } from "./features/tables";
 import { MenuPage } from "./features/menu/pages/MenuPages";
-import { TestDesignPage } from "./pages/TestDesignPage";
 import { LandingPage } from "./pages";
 
 const App = () => {
@@ -64,9 +63,6 @@ const App = () => {
             </PrivateRoute>
           }
         />
-
-        {/* Temporary test page*/}
-        <Route path="/test-design" element={<TestDesignPage />} />
 
         {/* Fallback: Redirect to home or login*/}
         <Route

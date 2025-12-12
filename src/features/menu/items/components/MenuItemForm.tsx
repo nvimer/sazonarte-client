@@ -107,7 +107,7 @@ export function MenuItemForm({ item, onSuccess, onCancel }: MenuItemFormProps) {
 
     // ========== RENDER ==========
     return (
-        <Card variant="elevated" padding="xl">
+        <Card variant="elevated" padding="lg">
             {/* =============== FORM HEADER ================== */}
             <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-neutral-900 mb-2">
