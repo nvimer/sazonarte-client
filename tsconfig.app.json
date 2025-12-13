@@ -4,7 +4,7 @@
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "module": "EsNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
 
@@ -23,10 +23,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Path Aliases - Permite importar con @ en lugar de ../../ */
-    "baseUrl": ".",
+    /* Path Aliases */
+    "baseUrl": "./src/",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     }
   },
   "include": ["src"]
