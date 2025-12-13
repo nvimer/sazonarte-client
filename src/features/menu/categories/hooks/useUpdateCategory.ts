@@ -1,4 +1,4 @@
-import { menuApi } from "@/api";
+import { menuApi } from "@/services";
 import { queryKeys } from "@/lib";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { UpdateMenuItemInput } from "@/types";

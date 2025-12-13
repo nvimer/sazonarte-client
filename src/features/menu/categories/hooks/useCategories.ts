@@ -1,4 +1,4 @@
-import { menuApi } from "@/api";
+import { menuApi } from "@/services";
 import { queryKeys } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 

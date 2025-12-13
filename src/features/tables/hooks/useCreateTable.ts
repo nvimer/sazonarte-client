@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateTableInput } from "../schemas/tableSchemas";
-import { tablesApi } from "@/api";
+import { tablesApi } from "@/services";
 import { queryKeys } from "@/lib";
 
 /**

@@ -1,4 +1,4 @@
-import { tablesApi } from "@/api";
+import { tablesApi } from "@/services";
 import { queryKeys } from "@/lib";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
