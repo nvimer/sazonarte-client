@@ -8,7 +8,7 @@
 import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { User, LoginInput, AuthResponse } from "@/types";
-import { authApi, profileApi } from "@/api";
+import { authApi, profileApi } from "@/services";
 
 /**
  * Defines what data and functions the context will share
